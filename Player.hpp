@@ -4,7 +4,7 @@
 #define PLAYER_HPP_INCLUDED
 class Player:public ImgAnim{
     public:
-        Player(sf::Image &imgPlayer,float xInit,float yInit);
+        Player(sf::Image &imgPlayer,sf::RenderWindow *app,float xInit,float yInit);
 //        void Think(sf::RenderWindow &App);
        // void Move(const float x,const float y);
        // void Draw(sf::RenderWindow &App);
@@ -24,6 +24,7 @@ class Player:public ImgAnim{
       //void GetPosition();
     private:
         sf::Image m_imgPlayer;
+        sf::RenderWindow *m_app;
         //ImgAnim m_spritePlayer;
         int m_velx;
         int m_vely;
