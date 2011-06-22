@@ -1,8 +1,7 @@
 #include "Player.hpp"
 
 Player::Player(sf::Image &imgPlayer,sf::RenderWindow *app,float xInit=100.f,float yInit=200.f)
-: ImgAnim::ImgAnim(imgPlayer,3,4),m_app(app)
-{
+: ImgAnim::ImgAnim(imgPlayer,3,4),m_app(app){
     setDelay(0.1);
     m_colBot=false;
     m_point=false;
@@ -10,6 +9,7 @@ Player::Player(sf::Image &imgPlayer,sf::RenderWindow *app,float xInit=100.f,floa
     m_vely=0;
     SetX(xInit);
    SetY(yInit);
+
 }
 sf::IntRect Player::GetPlayerRect(){
     sf::IntRect(GetPosition().x,GetPosition().y,GetPosition().x+PLAYERCOLLISIONWIDTH,GetPosition().y+PLAYERCOLLISIONHEIGHT);
