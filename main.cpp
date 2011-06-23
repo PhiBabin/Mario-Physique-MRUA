@@ -10,9 +10,16 @@ int main(){
     sf::RenderWindow App(sf::VideoMode(SCREENWIDTH, SCREENHEIGHT, 32), "Mario MRUA", sf::Style::Close | sf::Style::Titlebar );
     App.UseVerticalSync(true);
     App.SetFramerateLimit(60);
-    bool menu=true,record=false;
-    sf::Vector2f originePoint(0.f,0.f);
-    bool triangle,point,schema,show=false;
+    bool menu=true,record=false,mouse=false;
+
+    sf::Image imgOrigine;
+	imgOrigine.LoadFromFile("origine.png");
+	imgOrigine.SetSmooth(false);
+    sf::Sprite originePoint(imgOrigine);
+    originePoint.SetPosition(0,0);
+
+    string Message;
+    sf::String Text(Message, sf::Font::GetDefaultFont(), 12);
 
     vector<dataPoint*> dataList;
 
@@ -43,7 +50,13 @@ int main(){
         }
         else{
             App.SetView(View2);
-            //cout<< Clock.GetElapsedTime()-lastFrame<<endl;
+
+
+            if(Input.IsMouseButtonDown(sf::Mouse::Left)){
+                originePoint.SetPosition(App.ConvertCoords(Input.GetMouseX()-originePoint.GetSize().x*2.f/3.f,Input.GetMouseY()-originePoint.GetSize().y*2.f/3.f));
+                mouse=true;
+            }
+
             if(record&&Clock.GetElapsedTime()-lastFrame>frame){
                 lastFrame = Clock.GetElapsedTime();
                 dataList.push_back(new dataPoint(Clock.GetElapsedTime()-Time));
@@ -54,7 +67,7 @@ int main(){
 
             if (App.GetInput().IsKeyDown(sf::Key::Z)&&!record){
                 record=true;
-                if(originePoint.x==0 && originePoint.y==0)originePoint=newPlayer.GetPosition();
+                if(!mouse)originePoint.SetPosition(newPlayer.GetPosition());
                 lastFrame = Clock.GetElapsedTime();
                 Time = Clock.GetElapsedTime();
                 vector<dataPoint*>().swap(dataList);
@@ -64,24 +77,28 @@ int main(){
             }
             if ((App.GetInput().IsKeyDown(sf::Key::X)&&record)||(dataList.size()>200&&record)){
                 record=false;
-                string const nomFichier("data.csv");
+                 stringstream ss;
+                 ss<<sf::Randomizer::Random(0000, 10000);
+                string const nomFichier("data/data"+ss.str()+".csv");
+                Message=nomFichier+" saved.";
                 ofstream monFlux(nomFichier.c_str());
                 monFlux<<"\"Temps(s)\",\"S(Px)\""<<endl;
                 for(int it=0;it<dataList.size();it++)
                 //monFlux<<"\""<<round(dataList.at(it)->GetTime())<<","<<10000000*(dataList.at(it)->GetTime()-round(dataList.at(it)->GetTime()))<<"\""<<",\""<<round(dataList.at(it)->GetPosition().y-originePoint.y)<<"\""<< endl;
-                monFlux<<"\""<<dataList.at(it)->GetTime()<<"\""<<",\""<<dataList.at(it)->GetPosition().y-originePoint.y<<"\""<< endl;
+                monFlux<<"\""<<dataList.at(it)->GetTime()<<"\""<<",\""<<-1*(dataList.at(it)->GetPosition().y-originePoint.GetPosition().y)<<"\""<< endl;
             }
 
             if (App.GetInput().IsKeyDown(sf::Key::Up))newPlayer.Jump();
             newPlayer.Turn(App.GetInput().IsKeyDown(sf::Key::Left),App.GetInput().IsKeyDown(sf::Key::Right));
             myMap.thinkPlayer();
             View2.SetFromRect(newPlayer.GetViewRect());
-            stop_on.SetPosition(newPlayer.GetViewRect().Left,newPlayer.GetViewRect().Top);
+            stop_on.SetPosition(newPlayer.GetViewRect().Left,newPlayer.GetViewRect().Bottom-stop_on.GetSize().y);
+            Text.SetText(Message);
+            Text.SetPosition(newPlayer.GetViewRect().Left,newPlayer.GetViewRect().Top);
         }
         sf::Event event;
         unsigned int e=0;
-        while (App.GetEvent(event))
-        {
+        while (App.GetEvent(event)){
             if(event.Type == sf::Event::KeyPressed)menu=false;
             if (event.Type == sf::Event::Closed) App.Close();
             e++;
@@ -92,7 +109,9 @@ int main(){
         else{
             myMap.draw();
             for(int it=0;it<dataList.size();it++)App.Draw(*dataList.at(it));
+            App.Draw(originePoint);
             App.Draw(stop_on);
+            App.Draw(Text);
         }
         App.Display();
     }
