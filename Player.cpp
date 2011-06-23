@@ -8,8 +8,7 @@ Player::Player(sf::Image &imgPlayer,sf::RenderWindow *app,float xInit=100.f,floa
     m_velx=0;
     m_vely=0;
     SetX(xInit);
-   SetY(yInit);
-
+    SetY(yInit);
 }
 sf::IntRect Player::GetPlayerRect(){
     sf::IntRect(GetPosition().x,GetPosition().y,GetPosition().x+PLAYERCOLLISIONWIDTH,GetPosition().y+PLAYERCOLLISIONHEIGHT);

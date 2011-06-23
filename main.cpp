@@ -5,9 +5,13 @@ int main()
 {
     sf::RenderWindow App(sf::VideoMode(SCREENWIDTH, SCREENHEIGHT, 32), "Mario MRUA", sf::Style::Close | sf::Style::Titlebar );
     App.UseVerticalSync(true);
-    float x,y;
-    bool menu=true;
+    App.SetFramerateLimit(true);
+    bool menu=true,record=false;
+    sf::Vector2f originePoint(0.f,0.f);
     bool triangle,point,schema,show=false;
+
+    vector<dataPoint> dataList;
+
     sf::Image imgPlayer;
 	imgPlayer.LoadFromFile("sprite4.png");
 	imgPlayer.SetSmooth(false);
@@ -24,6 +28,8 @@ int main()
         }
         else{
             App.SetView(View2);
+
+            if (App.GetInput().IsKeyDown(sf::Key::Up))newPlayer.Jump();
 
             if (App.GetInput().IsKeyDown(sf::Key::Up))newPlayer.Jump();
             newPlayer.Turn(App.GetInput().IsKeyDown(sf::Key::Left),App.GetInput().IsKeyDown(sf::Key::Right));

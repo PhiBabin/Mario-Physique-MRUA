@@ -29,6 +29,8 @@ using namespace std;
 #include "LayerAnim.cpp"
 #include "ImgAnim.cpp"
 
+#include "dataPoint.cpp"
+
 #include "Player.cpp"
 
 #include "Map.cpp"
