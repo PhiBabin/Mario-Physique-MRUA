@@ -6,7 +6,7 @@ int main(){
     float Time = Clock.GetElapsedTime();
     float lastFrame;
     Clock.Reset();
-    float frame= 2;
+    float frame= 0.05;
     sf::RenderWindow App(sf::VideoMode(SCREENWIDTH, SCREENHEIGHT, 32), "Mario MRUA", sf::Style::Close | sf::Style::Titlebar );
     App.UseVerticalSync(true);
     App.SetFramerateLimit(60);
@@ -23,6 +23,10 @@ int main(){
     Player newPlayer(imgPlayer,&App,20.f,360.f);
     newPlayer.SetPosition(20,360);
 
+    sf::Image imgPoint;
+	imgPoint.LoadFromFile("point.png");
+	imgPoint.SetSmooth(false);
+
 	MapTile myMap(App,"level11.png","tile4.png","tileimage8.png","tileprop3.txt",newPlayer);
 
     sf::View View2(newPlayer.GetViewRect());
@@ -38,15 +42,18 @@ int main(){
                 lastFrame = Clock.GetElapsedTime();
                 dataList.push_back(new dataPoint(Clock.GetElapsedTime()-Time));
                 dataList.back()->SetPosition(newPlayer.GetPosition());
+                dataList.back()->SetImage(imgPoint);
                 cout<< "frame"<<endl;
             }
 
-            if (App.GetInput().IsKeyDown(sf::Key::Z)){
+            if (App.GetInput().IsKeyDown(sf::Key::Z)&&!record){
                 record=true;
                 if(originePoint.x==0 && originePoint.y==0)originePoint=newPlayer.GetPosition();
                 lastFrame = Clock.GetElapsedTime();
+                vector<dataPoint*>().swap(dataList);
                 dataList.push_back(new dataPoint(0));
                 dataList.back()->SetPosition(newPlayer.GetPosition());
+                dataList.back()->SetImage(imgPoint);
             }
             if ((App.GetInput().IsKeyDown(sf::Key::X)&&record)||dataList.size()>200){
                 record=false;
@@ -71,6 +78,7 @@ int main(){
         }
         else{
             myMap.draw();
+            for(int it=0;it<dataList.size();it++)App.Draw(*dataList.at(it));
         }
         App.Display();
     }

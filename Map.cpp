@@ -203,7 +203,6 @@ bool MapTile::collisionTriangle(const sf::IntRect playerRect){
                 if(m_typeList[m_tileSet[x][y]].solid){
                    // cout<<playerRect.Bottom<<"p<"<<(x+1)*TILEWIDTH<<" "<<playerRect.Right<<"p>"<<x*TILEWIDTH;
                     if(y*TILEHEIGHT<=playerRect.Bottom&&y*TILEHEIGHT>=playerRect.Top){
-                        cout<<" ====sol==";
                         m_player.UnlockJump();
                         m_player.BottomCollision(true);
                         //if(m_player.GetVelx()>=0)m_player.setAnimRow(0);
