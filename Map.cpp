@@ -88,110 +88,6 @@ MapTile::MapTile(sf::RenderWindow &App,const char* tileset,const char* image_sch
     if(!collisionPlayerGeneral(m_player.GetMovedPlayerRect(movHor,movVer)))m_player.Move(movHor,movVer);
   //  collisionPlayer();
  }
-//void MapTile::collisionPlayer(){
-//     float movHor=0;
-//     float movVer=0;
-//    float movHorTest=m_player.GetVelx()*m_app.GetFrameTime();
-//    float movVerTest=m_player.GetVely()*m_app.GetFrameTime();
-//    sf::IntRect poss[3], playerRect;
-//    bool CollisionHaut=false;
-//    bool CollisionBas=false;
-//    bool CollisionGauche=false;
-//    bool CollisionDroite=false;
-//    bool first=false;
-//    bool noProb=false;
-//    poss[0]=m_player.GetMovedPlayerRect(movHorTest,movVerTest);
-//    poss[1]=m_player.GetMovedPlayerRect(movHorTest,0);
-//    poss[2]=m_player.GetMovedPlayerRect(0,movVerTest);
-//   // for(int m=0;m<=2;m++){
-//        //playerRect=poss[m];
-//        playerRect=poss[0];
-//        int maxHeight, minHeight, maxWidth, minWidth;
-//        minHeight=playerRect.Top/TILEHEIGHT;
-//        minWidth=playerRect.Left/TILEWIDTH;
-//        maxHeight=(playerRect.Top+PLAYERCOLLISIONHEIGHT-1)/TILEHEIGHT;
-//        maxWidth=(playerRect.Left+PLAYERCOLLISIONWIDTH-1)/TILEWIDTH;
-//
-//        if(minHeight<0)minHeight=0;
-//        if(maxHeight>m_height)maxHeight=m_height;
-//        if(minWidth<0)minWidth=0;
-//        if(maxWidth>m_width)maxWidth=m_width;
-//        for(int y=minHeight;y<=maxHeight;y++){
-//            for(int x=minWidth;x<=maxWidth;x++){
-//                if(!(x>=m_width or y>=m_height)){
-//                    if(m_typeList[m_tileSet[x][y]].solid/*&&(!first ||!noProb)*/){
-//                       // cout<<playerRect.Left<<","<<playerRect.Right<<endl;
-//                        //cout<<playerRect.Left<<"p<"<<(x+1)*TILEWIDTH<<" "<<playerRect.Right<<"p>"<<x*TILEWIDTH;
-//                        if(x*TILEWIDTH>=playerRect.Left&&x*TILEWIDTH<=playerRect.Right){
-//                            cout<<" ====Droit==";
-//                         //   m_player.SetX(x*TILEWIDTH-PLAYERCOLLISIONWIDTH);
-//                            CollisionDroite= true;
-//                        }
-//                        if((x+1)*TILEWIDTH<=playerRect.Right&&(x+1)*TILEWIDTH>=playerRect.Left){
-//                            cout<<" ====Gauche==";
-//                            CollisionGauche= true;
-//                         //   m_player.SetX((x+1)*TILEWIDTH);
-//                        }
-//                        if(y*TILEHEIGHT<playerRect.Bottom&&y*TILEHEIGHT>playerRect.Top){
-//                            cout<<" ====sol=="<<y*TILEWIDTH<<" Y="<<m_player.GetPosition().y<<" newy="<<(y)*TILEHEIGHT-PLAYERCOLLISIONHEIGHT-1;
-//                            m_player.SetY((y)*TILEHEIGHT-PLAYERCOLLISIONHEIGHT);
-//                            m_player.UnlockJump();
-//                            m_player.BottomCollision(true);
-//                            //if(m_player.GetVelx()>=0)m_player.setAnimRow(0);
-//                            //else m_player.setAnimRow(1);
-//                            //else m_player.animRow(1);
-//                            CollisionBas= true;
-//                        }
-//                        if((y+1)*TILEHEIGHT>=playerRect.Top&&(y+1)*TILEHEIGHT<=playerRect.Bottom){
-//                            cout<<" ====tete=="<<m_player.GetVely();
-//                            //m_player.SetY((y+1)*TILEHEIGHT);
-//                            m_player.ResetVely();
-//                            CollisionHaut=true;
-//                        }
-//                        cout<<endl;
-//                    }
-//                }
-//            }
-//        }
-//        if(!CollisionBas&&!CollisionHaut){
-//            m_player.Gravity();
-//            movVer=movVerTest;
-//        }
-//        if(!CollisionDroite&&!CollisionGauche){
-//            movHor=movHorTest;
-//        }
-//            cout<<"VelVer="<<movVer<<" y="<<m_player.GetPosition().y<<endl;
-//
-////        if(!CollisionBas&&!CollisionHaut&&!CollisionDroite&&!CollisionGauche){
-////            movHor=movHorTest;
-////            movVer=movVerTest;
-////        }
-////        if(!first){
-////            if(!CollisionHorizontal&&!CollisionVertical){
-////                noProb=true;
-////            }
-////            first=true;
-//   //    }
-//    //}
-////    if(noProb){
-////        movVer=movVerTest;
-////        movHor=movHorTest;
-////    }
-////    else {
-////        if(!CollisionHorizontal){
-////       //m_player.Move(m_player.GetVelx()*m_app.GetFrameTime(),0);
-////            movHor=movHorTest;
-////        }//cout<<"help"<<endl;
-////        if(!CollisionVertical){
-////            m_player.Gravity();
-////           // m_player.Move(0,m_player.GetVely()*m_app.GetFrameTime());
-////           movVer=movVerTest;
-////        }
-////    }
-//    m_player.Move(movHor,movVer);
-//    //cout<<"Stop Blabla2"<<endl;
-//    //return CollisionHorizontal;
-// }
 bool MapTile::collisionTriangle(const sf::IntRect playerRect){
     if(m_triangle){
         float x= (playerRect.Right-playerRect.Left)/2+playerRect.Left;
@@ -216,15 +112,10 @@ bool MapTile::collisionTriangle(const sf::IntRect playerRect){
     int maxHeight, minHeight, maxWidth, minWidth;
     bool Collision=false;
     if(collisionTriangle(playerRect))Collision=true;
-        //cout<<"collision";
-    //cout<<"FUUUUUUUUUUUUUUUUUUUUUUUUUUUUUCKKKKKKKKK"<<endl;
-    //bool CollisionVertical=false;
     minHeight=playerRect.Top/TILEHEIGHT;
     minWidth=playerRect.Left/TILEWIDTH;
     maxHeight=(playerRect.Bottom-1)/TILEHEIGHT;
     maxWidth=(playerRect.Right-1)/TILEWIDTH;
-   // cout<< "gen x1="<<playerRect.Left<<" y1="<<playerRect.Top<<" x2="<<playerRect.Right<<" y2="<<playerRect.Bottom<<" tilex="<<maxWidth-minWidth<<endl;
-   // sf::IntRect theTile;
     if(minHeight<0)minHeight=0;
     if(maxHeight>m_height)maxHeight=m_height;
     if(minWidth<0)minWidth=0;
@@ -238,30 +129,6 @@ bool MapTile::collisionTriangle(const sf::IntRect playerRect){
                        cout<<"i hope it work";
                        return true;
                     }
-                   // cout<<playerRect.Left<<","<<playerRect.Right<<endl;
-                    //cout<<playerRect.Left<<"p<"<<(x+1)*TILEWIDTH<<" "<<playerRect.Right<<"p>"<<x*TILEWIDTH;
-//                    if(x*TILEWIDTH>=playerRect.Left&&x*TILEWIDTH<=playerRect.Right){
-//                        cout<<" ====Droit==";
-//                        Collision= true;
-//                    }
-//                    if((x+1)*TILEWIDTH<=playerRect.Right&&(x+1)*TILEWIDTH>=playerRect.Left){
-//                        cout<<" ====Gauche==";
-//                        Collision= true;
-//                    }
-//                    if(y*TILEHEIGHT<=playerRect.Bottom&&y*TILEHEIGHT>=playerRect.Top){
-//                        cout<<" ====sol==";
-//                        //m_player.UnlockJump();
-//                        //m_player.BottomCollision(true);
-//                        //if(m_player.GetVelx()>=0)m_player.setAnimRow(0);
-//                        //else m_player.setAnimRow(1);
-//                        //else m_player.animRow(1);
-//                        Collision= true;
-//                    }
-//                    if((y+1)*TILEHEIGHT>=playerRect.Top&&(y+1)*TILEHEIGHT<=playerRect.Bottom){
-//                        cout<<" ====tete==";
-//                        //m_player.ResetVely();
-//                        Collision=true;
-//                    }
                     cout<<endl;
                 }
             }
@@ -309,7 +176,7 @@ bool MapTile::collisionTriangle(const sf::IntRect playerRect){
     return CollisionHorizontal;
  }
  bool MapTile::collisionPlayerVertical(const sf::IntRect playerRect){
-    cout<< "ver x1="<<playerRect.Left<<" y1="<<playerRect.Top<<" x2="<<playerRect.Right<<" y2="<<playerRect.Bottom<<endl;
+    //cout<< "ver x1="<<playerRect.Left<<" y1="<<playerRect.Top<<" x2="<<playerRect.Right<<" y2="<<playerRect.Bottom<<endl;
     int maxHeight, minHeight, maxWidth, minWidth;
     bool CollisionVertical=false;
     if(collisionTriangle(playerRect)){
@@ -358,7 +225,7 @@ bool MapTile::collisionTriangle(const sf::IntRect playerRect){
     return CollisionVertical;
  }
 void MapTile::draw(){
-    cout<<"x"<<m_player.GetPosition().x<<"y"<<m_player.GetPosition().y<<"Velx"<<m_player.GetVelx()<<"Vely"<<m_player.GetVely()<<endl;
+///    cout<<"x"<<m_player.GetPosition().x<<"y"<<m_player.GetPosition().y<<"Velx"<<m_player.GetVelx()<<"Vely"<<m_player.GetVely()<<endl;
     unsigned char typeNbr;
     sf::FloatRect views=m_app.GetView().GetRect();
     int maxHeight, minHeight, maxWidth, minWidth;

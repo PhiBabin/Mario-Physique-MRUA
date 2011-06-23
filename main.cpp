@@ -1,16 +1,20 @@
 #include "includes.hpp"
 
 
-int main()
-{
+int main(){
+    sf::Clock Clock;
+    float Time = Clock.GetElapsedTime();
+    float lastFrame;
+    Clock.Reset();
+    float frame= 2;
     sf::RenderWindow App(sf::VideoMode(SCREENWIDTH, SCREENHEIGHT, 32), "Mario MRUA", sf::Style::Close | sf::Style::Titlebar );
     App.UseVerticalSync(true);
-    App.SetFramerateLimit(true);
+    App.SetFramerateLimit(60);
     bool menu=true,record=false;
     sf::Vector2f originePoint(0.f,0.f);
     bool triangle,point,schema,show=false;
 
-    vector<dataPoint> dataList;
+    vector<dataPoint*> dataList;
 
     sf::Image imgPlayer;
 	imgPlayer.LoadFromFile("sprite4.png");
@@ -18,6 +22,7 @@ int main()
 	imgPlayer.CreateMaskFromColor(sf::Color(0,0,0));
     Player newPlayer(imgPlayer,&App,20.f,360.f);
     newPlayer.SetPosition(20,360);
+
 	MapTile myMap(App,"level11.png","tile4.png","tileimage8.png","tileprop3.txt",newPlayer);
 
     sf::View View2(newPlayer.GetViewRect());
@@ -28,8 +33,25 @@ int main()
         }
         else{
             App.SetView(View2);
+            //cout<< Clock.GetElapsedTime()-lastFrame<<endl;
+            if(record&&Clock.GetElapsedTime()-lastFrame>frame){
+                lastFrame = Clock.GetElapsedTime();
+                dataList.push_back(new dataPoint(Clock.GetElapsedTime()-Time));
+                dataList.back()->SetPosition(newPlayer.GetPosition());
+                cout<< "frame"<<endl;
+            }
 
-            if (App.GetInput().IsKeyDown(sf::Key::Up))newPlayer.Jump();
+            if (App.GetInput().IsKeyDown(sf::Key::Z)){
+                record=true;
+                if(originePoint.x==0 && originePoint.y==0)originePoint=newPlayer.GetPosition();
+                lastFrame = Clock.GetElapsedTime();
+                dataList.push_back(new dataPoint(0));
+                dataList.back()->SetPosition(newPlayer.GetPosition());
+            }
+            if ((App.GetInput().IsKeyDown(sf::Key::X)&&record)||dataList.size()>200){
+                record=false;
+                for(int it=0;it<dataList.size();it++)cout<<dataList.at(it)->GetPosition().x-originePoint.x<<endl;
+            }
 
             if (App.GetInput().IsKeyDown(sf::Key::Up))newPlayer.Jump();
             newPlayer.Turn(App.GetInput().IsKeyDown(sf::Key::Left),App.GetInput().IsKeyDown(sf::Key::Right));

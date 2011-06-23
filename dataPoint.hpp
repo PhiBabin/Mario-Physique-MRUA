@@ -1,6 +1,7 @@
 #ifndef DATAPOINT_HPP_INCLUDED
 #define DATAPOINT_HPP_INCLUDED
 class dataPoint: public sf::Sprite{
+    public:
     dataPoint();
     dataPoint(float theTime);
     float GetTime();

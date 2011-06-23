@@ -45,7 +45,7 @@ void Player::Turn(bool left, bool right){
         m_velx=-150.f;
     }
     else if(!left&&right){
-        cout<<"no move"<<endl;
+        //cout<<"no move"<<endl;
         if(m_colBot)setAnimRow(0);
         else setAnimRow(2);
 		play();
