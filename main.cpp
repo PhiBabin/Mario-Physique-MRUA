@@ -27,6 +27,12 @@ int main(){
 	imgPoint.LoadFromFile("point.png");
 	imgPoint.SetSmooth(false);
 
+
+    sf::Image imgStop_on;
+	imgStop_on.LoadFromFile("stop_on.png");
+	imgStop_on.SetSmooth(false);
+	sf::Sprite stop_on(imgStop_on);
+
 	MapTile myMap(App,"level11.png","tile4.png","tileimage8.png","tileprop3.txt",newPlayer);
 
     sf::View View2(newPlayer.GetViewRect());
@@ -60,13 +66,17 @@ int main(){
                 record=false;
                 string const nomFichier("data.csv");
                 ofstream monFlux(nomFichier.c_str());
-                for(int it=0;it<dataList.size();it++)monFlux<<"\""<<dataList.at(it)->GetTime()<<"\""<<",\""<<dataList.at(it)->GetPosition().y-originePoint.y<<"\""<< endl;
+                monFlux<<"\"Temps(s)\",\"S(Px)\""<<endl;
+                for(int it=0;it<dataList.size();it++)
+                //monFlux<<"\""<<round(dataList.at(it)->GetTime())<<","<<10000000*(dataList.at(it)->GetTime()-round(dataList.at(it)->GetTime()))<<"\""<<",\""<<round(dataList.at(it)->GetPosition().y-originePoint.y)<<"\""<< endl;
+                monFlux<<"\""<<dataList.at(it)->GetTime()<<"\""<<",\""<<dataList.at(it)->GetPosition().y-originePoint.y<<"\""<< endl;
             }
 
             if (App.GetInput().IsKeyDown(sf::Key::Up))newPlayer.Jump();
             newPlayer.Turn(App.GetInput().IsKeyDown(sf::Key::Left),App.GetInput().IsKeyDown(sf::Key::Right));
             myMap.thinkPlayer();
             View2.SetFromRect(newPlayer.GetViewRect());
+            stop_on.SetPosition(newPlayer.GetViewRect().Left,newPlayer.GetViewRect().Top);
         }
         sf::Event event;
         unsigned int e=0;
@@ -82,6 +92,7 @@ int main(){
         else{
             myMap.draw();
             for(int it=0;it<dataList.size();it++)App.Draw(*dataList.at(it));
+            App.Draw(stop_on);
         }
         App.Display();
     }
