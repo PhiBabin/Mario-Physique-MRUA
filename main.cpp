@@ -50,14 +50,17 @@ int main(){
                 record=true;
                 if(originePoint.x==0 && originePoint.y==0)originePoint=newPlayer.GetPosition();
                 lastFrame = Clock.GetElapsedTime();
+                Time = Clock.GetElapsedTime();
                 vector<dataPoint*>().swap(dataList);
                 dataList.push_back(new dataPoint(0));
                 dataList.back()->SetPosition(newPlayer.GetPosition());
                 dataList.back()->SetImage(imgPoint);
             }
-            if ((App.GetInput().IsKeyDown(sf::Key::X)&&record)||dataList.size()>200){
+            if ((App.GetInput().IsKeyDown(sf::Key::X)&&record)||(dataList.size()>200&&record)){
                 record=false;
-                for(int it=0;it<dataList.size();it++)cout<<dataList.at(it)->GetPosition().x-originePoint.x<<endl;
+                string const nomFichier("data.csv");
+                ofstream monFlux(nomFichier.c_str());
+                for(int it=0;it<dataList.size();it++)monFlux<<"\""<<dataList.at(it)->GetTime()<<"\""<<",\""<<dataList.at(it)->GetPosition().y-originePoint.y<<"\""<< endl;
             }
 
             if (App.GetInput().IsKeyDown(sf::Key::Up))newPlayer.Jump();
