@@ -11,13 +11,13 @@ Player::Player(sf::Image &imgPlayer,sf::RenderWindow *app,float xInit=100.f,floa
     SetY(yInit);
 }
 sf::IntRect Player::GetPlayerRect(){
-    sf::IntRect(GetPosition().x,GetPosition().y,GetPosition().x+PLAYERCOLLISIONWIDTH,GetPosition().y+PLAYERCOLLISIONHEIGHT);
+    return sf::IntRect(GetPosition().x,GetPosition().y,PLAYERCOLLISIONWIDTH,PLAYERCOLLISIONHEIGHT);
 }
 sf::FloatRect Player::GetViewRect(){
-    return sf::FloatRect(GetPosition().x-SCREENWIDTH/4,GetPosition().y-SCREENHEIGHT/4,GetPosition().x+SCREENWIDTH/4,GetPosition().y+SCREENHEIGHT/4);
+    return sf::FloatRect(GetPosition().x-SCREENWIDTH/4,GetPosition().y-SCREENHEIGHT/4,SCREENWIDTH/2,SCREENHEIGHT/2);
 }
 sf::IntRect Player::GetMovedPlayerRect(const float moveX,const float moveY){
-  return sf::IntRect(GetPosition().x+moveX,GetPosition().y+moveY,GetPosition().x+PLAYERCOLLISIONWIDTH+moveX,GetPosition().y+PLAYERCOLLISIONHEIGHT+moveY);
+  return sf::IntRect(GetPosition().x+moveX,GetPosition().y+moveY,PLAYERCOLLISIONWIDTH+moveX,PLAYERCOLLISIONHEIGHT+moveY);
 }
 void Player::Gravity(){
     if(m_vely<200)m_vely+=250*m_app->GetFrameTime();

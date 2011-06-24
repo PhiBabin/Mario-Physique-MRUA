@@ -30,13 +30,13 @@ MapTile::MapTile(sf::RenderWindow &App,const char* tileset,const char* image_sch
        // m_player.Move(0,m_player.GetVely()*m_app.GetFrameTime());
        movVer=movVerTest;
     }
-    if(!collisionPlayerGeneral(m_player.GetMovedPlayerRect(movHor,movVer)))m_player.Move(movHor,movVer);
+    //if(!collisionPlayerGeneral(m_player.GetMovedPlayerRect(movHor,movVer)))m_player.Move(movHor,movVer);
   //  collisionPlayer();
  }
 
  bool MapTile::collisionPlayerGeneral(const sf::IntRect playerRect){
     int maxHeight, minHeight, maxWidth, minWidth;
-    bool Collision=false;
+  //  bool Collision=false;
     minHeight=playerRect.Top/TILEHEIGHT;
     minWidth=playerRect.Left/TILEWIDTH;
     maxHeight=(playerRect.Top+playerRect.Height-1)/TILEHEIGHT;
@@ -49,7 +49,7 @@ MapTile::MapTile(sf::RenderWindow &App,const char* tileset,const char* image_sch
         for(int x=minWidth;x<=maxWidth;x++){
             if(!(x>=m_width or y>=m_height)){
                 if(m_typeList[m_tileSet[x][y]].solid){
-                   sf::IntRect  theTile(x*TILEWIDTH,y*TILEHEIGHT,(x+1)*TILEWIDTH,(y+1)*TILEHEIGHT);
+                   sf::IntRect  theTile(x*TILEWIDTH,y*TILEHEIGHT,(1)*TILEWIDTH,(1)*TILEHEIGHT);
                     if(playerRect.Intersects(theTile)){
                        cout<<"i hope it work";
                        return true;
@@ -143,9 +143,10 @@ MapTile::MapTile(sf::RenderWindow &App,const char* tileset,const char* image_sch
     return CollisionVertical;
  }
 void MapTile::draw(){
-///    cout<<"x"<<m_player.GetPosition().x<<"y"<<m_player.GetPosition().y<<"Velx"<<m_player.GetVelx()<<"Vely"<<m_player.GetVely()<<endl;
+    cout<<"x"<<m_player.GetPosition().x<<"y"<<m_player.GetPosition().y<<"Velx"<<m_player.GetVelx()<<"Vely"<<m_player.GetVely()<<endl;
     unsigned char typeNbr;
-    sf::FloatRect views=m_app.GetView().GetViewport();
+    //sf::FloatRect views=m_app.GetView().GetViewport();
+    sf::FloatRect views=sf::FloatRect(0,0,600,600);
     int maxHeight, minHeight, maxWidth, minWidth;
     // (10*40+80-(10*40))/40
     //(400+80-400)/40

@@ -7,7 +7,7 @@ int main(){
     float lastFrame;
     Clock.Reset();
     float frame= 0.05;
-    sf::RenderWindow App(sf::VideoMode(SCREENWIDTH, SCREENHEIGHT, 32), "Mario MRUA", sf::Style::Close | sf::Style::Titlebar );
+    sf::RenderWindow App(sf::VideoMode(SCREENWIDTH, SCREENHEIGHT, 32), "Mario MRUA");
     App.EnableVerticalSync(true);
     App.SetFramerateLimit(60);
     bool menu=true,record=false,mouse=false;
@@ -49,7 +49,8 @@ int main(){
             App.SetView(App.GetDefaultView());
         }
         else{
-            App.SetView(View2);
+            App.SetView(App.GetDefaultView());
+           // App.SetView(View2);
 
 
             if(Input.IsMouseButtonDown(sf::Mouse::Left)){
@@ -83,7 +84,7 @@ int main(){
                 Message=nomFichier+" saved.";
                 ofstream monFlux(nomFichier.c_str());
                 monFlux<<"\"Temps(s)\",\"S(Px)\""<<endl;
-                for(int it=0;it<dataList.size();it++)
+                for(unsigned int it=0;it<dataList.size();it++)
                 //monFlux<<"\""<<round(dataList.at(it)->GetTime())<<","<<10000000*(dataList.at(it)->GetTime()-round(dataList.at(it)->GetTime()))<<"\""<<",\""<<round(dataList.at(it)->GetPosition().y-originePoint.y)<<"\""<< endl;
                 monFlux<<"\""<<dataList.at(it)->GetTime()<<"\""<<",\""<<-1*(dataList.at(it)->GetPosition().y-originePoint.GetPosition().y)<<"\""<< endl;
             }
@@ -91,7 +92,7 @@ int main(){
             if (App.GetInput().IsKeyDown(sf::Key::Up))newPlayer.Jump();
             newPlayer.Turn(App.GetInput().IsKeyDown(sf::Key::Left),App.GetInput().IsKeyDown(sf::Key::Right));
             myMap.thinkPlayer();
-            View2.SetViewport(newPlayer.GetViewRect());
+            View2.Reset(newPlayer.GetViewRect());
             stop_on.SetPosition(newPlayer.GetViewRect().Left,(newPlayer.GetViewRect().Top-newPlayer.GetViewRect().Height)-stop_on.GetSize().y);
             Text.SetString(Message);
             Text.SetPosition(newPlayer.GetViewRect().Left,newPlayer.GetViewRect().Top);
@@ -108,7 +109,7 @@ int main(){
         }
         else{
             myMap.draw();
-            for(int it=0;it<dataList.size();it++)App.Draw(*dataList.at(it));
+            for(unsigned int it=0;it<dataList.size();it++)App.Draw(*dataList.at(it));
             App.Draw(originePoint);
             App.Draw(newPlayer);
             App.Draw(stop_on);
