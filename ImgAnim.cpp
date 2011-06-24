@@ -31,13 +31,13 @@ void ImgAnim::setFrameDim(const unsigned int &w, const unsigned int &h)
 }
 //void ImgAnim::setImg(const sf::Image &Img,)
 //{
-//	SetSubRect(sf::IntRect(0,0,Img.GetWidth()/nbFrame,Img.GetHeight()/line));
+//	SetSubRect(sf::IntRect(0,0,Img.Width/nbFrame,Img.Height/line));
 //}
 
 sf::IntRect ImgAnim::frameDim() const
 {
 	sf::IntRect tRect = GetSubRect();
-	return sf::IntRect(0,0,tRect.GetWidth(),tRect.GetHeight());
+	return sf::IntRect(0,0,tRect.Width,tRect.Height);
 }
 
 void ImgAnim::setOffset(const unsigned int &x, const unsigned int &y)
@@ -73,16 +73,16 @@ void ImgAnim::setFrame(const unsigned int &count)
 void ImgAnim::refreshSubRect()
 {
 	sf::IntRect tRect = GetSubRect();
-	SetSubRect(sf::IntRect(tRect.GetWidth()*currentFrame()+m_xOffset,
-							tRect.GetHeight()*m_animRow+m_yOffset,
-							tRect.GetWidth()*(currentFrame()+1)+m_xOffset,
-							tRect.GetHeight()*m_animRow+tRect.GetHeight()+m_yOffset));
+	SetSubRect(sf::IntRect(tRect.Width*currentFrame()+m_xOffset,
+							tRect.Height*m_animRow+m_yOffset,
+							tRect.Width*(currentFrame()+1)+m_xOffset,
+							tRect.Height*m_animRow+tRect.Height+m_yOffset));
 }
 
 
-void ImgAnim::Render(sf::RenderTarget& Target) const
-{
-	ImgAnim* th = const_cast<ImgAnim*>(this);
-	th->update();
-	sf::Sprite::Render(Target);
-}
+//void ImgAnim::Render(sf::RenderTarget& Target, sf::Renderer& Renderer) const
+//{
+//	ImgAnim* th = const_cast<ImgAnim*>(this);
+//	th->update();
+//	sf::Sprite.Render(Target,Renderer);
+//}

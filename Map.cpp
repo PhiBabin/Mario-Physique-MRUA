@@ -20,102 +20,27 @@ MapTile::MapTile(sf::RenderWindow &App,const char* tileset,const char* image_sch
      float movVer=0;
      float movHorTest=m_player.GetVelx()*m_app.GetFrameTime();
      float movVerTest=m_player.GetVely()*m_app.GetFrameTime();
-//    if(collisionPlayerHorizontal(m_player.GetPlayerRect())||collisionPlayerVertical(m_player.GetPlayerRect())){
-//        cout<<m_player.GetPosition().x<<"maman"<<m_player.GetPosition().y<<endl;
-//    }
-//
 
-    //if(!collisionPlayerGeneral(m_player.GetMovedPlayerRect(movHorTest,movVerTest))){
-//        m_player.Gravity();
-//       //m_player.Move(m_player.GetVelx()*m_app.GetFrameTime(),0);
-//       movHor=movHorTest;
-//       movVer=movVerTest;
-//    }
-  //  else{
-//DEGRES(ASIN(
-//            (SIN(RADIANS(180-E7))*D4)/E4
-//            ))
-//DEGRES(ASIN((D4/E4)*SIN(RADIANS(97,7))))
-         if(!collisionPlayerHorizontal(m_player.GetMovedPlayerRect(movHorTest,0))){
-           //m_player.Move(m_player.GetVelx()*m_app.GetFrameTime(),0);
-           movHor=movHorTest;
-        }//cout<<"help"<<endl;
-        if(!collisionPlayerVertical(m_player.GetMovedPlayerRect(0,movVerTest))){
-            m_player.Gravity();
-           // m_player.Move(0,m_player.GetVely()*m_app.GetFrameTime());
-           movVer=movVerTest;
-        }
-        if(collisionTriangle(m_player.GetMovedPlayerRect(movHorTest,0))/*&&collisionPlayerVertical(m_player.GetMovedPlayerRect(0,movVerTest))*/){
-            sf::IntRect playerRect=m_player.GetMovedPlayerRect(movHorTest,0);
-            float x= (playerRect.Right-playerRect.Left)/2+playerRect.Left;
-            float y= playerRect.Bottom;
-            float a1=(m_triangleSprite.GetPointPosition(0).y-m_triangleSprite.GetPointPosition(1).y)/(m_triangleSprite.GetPointPosition(0).x-m_triangleSprite.GetPointPosition(1).x);
-            float a2=(m_triangleSprite.GetPointPosition(2).y-m_triangleSprite.GetPointPosition(0).y)/(m_triangleSprite.GetPointPosition(2).x-m_triangleSprite.GetPointPosition(0).x);
-            float a3=(m_triangleSprite.GetPointPosition(2).y-m_triangleSprite.GetPointPosition(1).y)/(m_triangleSprite.GetPointPosition(2).x-m_triangleSprite.GetPointPosition(1).x);
-
-            float b1=m_triangleSprite.GetPointPosition(1).y-(a1*m_triangleSprite.GetPointPosition(1).x);
-            float b2=m_triangleSprite.GetPointPosition(0).y-(a2*m_triangleSprite.GetPointPosition(0).x);
-            float b3=m_triangleSprite.GetPointPosition(2).y-(a3*m_triangleSprite.GetPointPosition(2).x);
-            //cout<<"blabla"<<endl;
-            //cout<<a1<<" b="<<b1<<" x="<<m_triangleSprite.GetPointPosition(0).x<<" y="<<m_triangleSprite.GetPointPosition(0).y<<" x="<<m_triangleSprite.GetPointPosition(1).x<<" y="<<m_triangleSprite.GetPointPosition(1).y<<endl;
-
-            float difference1=x-((y-b1)/a1);
-            float difference2=x-((y-b3)/a3);
-            if(difference1<0)difference1*=-1;
-            if(difference2<0)difference2*=-1;
-
-           // cout<<"1="<<difference1<<" 2="<<difference2<<endl;
-
-            if(difference1<difference2){
-                movVer=a1*(x)+b1-playerRect.Bottom;
-                // A ne pas supprimer:
-                //cos(atan(a+b))*movy=x
-                //y=a*x+b
-
-              //  cout<<"cote gauche"<<endl;
-                movHor=movHorTest;
-            }
-            if(difference1>difference2){
-                movVer=a3*(x)+b3-playerRect.Bottom;
-               // cout<<"cote droit"<<endl;
-                movHor=movHorTest;
-            }
-               //&&y-a2*x+b2&&y-a3*x+b3)return true;
-           // else return false;
-           //movVer=movVerTest;
-        }
-   // }
+    if(!collisionPlayerHorizontal(m_player.GetMovedPlayerRect(movHorTest,0))){
+       //m_player.Move(m_player.GetVelx()*m_app.GetFrameTime(),0);
+       movHor=movHorTest;
+    }//cout<<"help"<<endl;
+    if(!collisionPlayerVertical(m_player.GetMovedPlayerRect(0,movVerTest))){
+        m_player.Gravity();
+       // m_player.Move(0,m_player.GetVely()*m_app.GetFrameTime());
+       movVer=movVerTest;
+    }
     if(!collisionPlayerGeneral(m_player.GetMovedPlayerRect(movHor,movVer)))m_player.Move(movHor,movVer);
   //  collisionPlayer();
  }
-bool MapTile::collisionTriangle(const sf::IntRect playerRect){
-    if(m_triangle){
-        float x= (playerRect.Right-playerRect.Left)/2+playerRect.Left;
-        float y= playerRect.Bottom;
-        float a1=(m_triangleSprite.GetPointPosition(0).y-m_triangleSprite.GetPointPosition(1).y)/(m_triangleSprite.GetPointPosition(0).x-m_triangleSprite.GetPointPosition(1).x);
-        float a2=(m_triangleSprite.GetPointPosition(2).y-m_triangleSprite.GetPointPosition(0).y)/(m_triangleSprite.GetPointPosition(2).x-m_triangleSprite.GetPointPosition(0).x);
-        float a3=(m_triangleSprite.GetPointPosition(2).y-m_triangleSprite.GetPointPosition(1).y)/(m_triangleSprite.GetPointPosition(2).x-m_triangleSprite.GetPointPosition(1).x);
 
-        float b1=m_triangleSprite.GetPointPosition(1).y-(a1*m_triangleSprite.GetPointPosition(1).x);
-        float b2=m_triangleSprite.GetPointPosition(0).y-(a2*m_triangleSprite.GetPointPosition(0).x);
-        float b3=m_triangleSprite.GetPointPosition(2).y-(a3*m_triangleSprite.GetPointPosition(2).x);
-       // cout<<a1<<" b="<<b1<<" x="<<m_triangleSprite.GetPointPosition(0).x<<" y="<<m_triangleSprite.GetPointPosition(0).y<<" x="<<m_triangleSprite.GetPointPosition(1).x<<" y="<<m_triangleSprite.GetPointPosition(1).y<<endl;
-        if(y>=a1*x+b1&&y<=a2*x+b2&&y>=a3*x+b3)return true;
-        else return false;
-    }
-    else{
-        return false;
-    }
-
-}
  bool MapTile::collisionPlayerGeneral(const sf::IntRect playerRect){
     int maxHeight, minHeight, maxWidth, minWidth;
     bool Collision=false;
-    if(collisionTriangle(playerRect))Collision=true;
     minHeight=playerRect.Top/TILEHEIGHT;
     minWidth=playerRect.Left/TILEWIDTH;
-    maxHeight=(playerRect.Bottom-1)/TILEHEIGHT;
-    maxWidth=(playerRect.Right-1)/TILEWIDTH;
+    maxHeight=(playerRect.Top+playerRect.Height-1)/TILEHEIGHT;
+    maxWidth=(playerRect.Left+playerRect.Width-1)/TILEWIDTH;
     if(minHeight<0)minHeight=0;
     if(maxHeight>m_height)maxHeight=m_height;
     if(minWidth<0)minWidth=0;
@@ -143,11 +68,10 @@ bool MapTile::collisionTriangle(const sf::IntRect playerRect){
    // cout<< "hor x1="<<playerRect.Left<<" y1="<<playerRect.Top<<" x2="<<playerRect.Right<<" y2="<<playerRect.Bottom<<endl;
     int maxHeight, minHeight, maxWidth, minWidth;
     bool CollisionHorizontal=false;
-    if(collisionTriangle(playerRect))CollisionHorizontal=true;
     minHeight=playerRect.Top/TILEHEIGHT;
     minWidth=playerRect.Left/TILEWIDTH;
-    maxHeight=(playerRect.Bottom-1)/TILEHEIGHT;
-    maxWidth=(playerRect.Right-1)/TILEWIDTH;
+    maxHeight=(playerRect.Top+playerRect.Height-1)/TILEHEIGHT;
+    maxWidth=(playerRect.Left+playerRect.Width-1)/TILEWIDTH;
 
     if(minHeight<0)minHeight=0;
     if(maxHeight>m_height)maxHeight=m_height;
@@ -159,11 +83,11 @@ bool MapTile::collisionTriangle(const sf::IntRect playerRect){
                 if(m_typeList[m_tileSet[x][y]].solid){
                    // cout<<playerRect.Left<<","<<playerRect.Right<<endl;
                     //cout<<playerRect.Left<<"p<"<<(x+1)*TILEWIDTH<<" "<<playerRect.Right<<"p>"<<x*TILEWIDTH;
-                    if(x*TILEWIDTH>=playerRect.Left&&x*TILEWIDTH<=playerRect.Right){
+                    if(x*TILEWIDTH>=playerRect.Left&&x*TILEWIDTH<=playerRect.Left+playerRect.Width){
                         cout<<" ====Droit==";
                         CollisionHorizontal= true;
                     }
-                    if((x+1)*TILEWIDTH<=playerRect.Right&&(x+1)*TILEWIDTH>=playerRect.Left){
+                    if((x+1)*TILEWIDTH<=playerRect.Left+playerRect.Width&&(x+1)*TILEWIDTH>=playerRect.Left){
                         cout<<" ====Gauche==";
                         CollisionHorizontal= true;
                     }
@@ -179,16 +103,11 @@ bool MapTile::collisionTriangle(const sf::IntRect playerRect){
     //cout<< "ver x1="<<playerRect.Left<<" y1="<<playerRect.Top<<" x2="<<playerRect.Right<<" y2="<<playerRect.Bottom<<endl;
     int maxHeight, minHeight, maxWidth, minWidth;
     bool CollisionVertical=false;
-    if(collisionTriangle(playerRect)){
-        CollisionVertical=true;
-        m_player.UnlockJump();
-        m_player.BottomCollision(true);
-    }
  //   cout<<"Start"<<endl;
     minHeight=playerRect.Top/TILEHEIGHT;
     minWidth=playerRect.Left/TILEWIDTH;
-    maxHeight=(playerRect.Bottom-1)/TILEHEIGHT;
-    maxWidth=(playerRect.Right-1)/TILEWIDTH;
+    maxHeight=(playerRect.Top+playerRect.Height-1)/TILEHEIGHT;
+    maxWidth=(playerRect.Left+playerRect.Width-1)/TILEWIDTH;
 
     if(minHeight<0)minHeight=0;
     if(maxHeight>m_height)maxHeight=m_height;
@@ -202,7 +121,7 @@ bool MapTile::collisionTriangle(const sf::IntRect playerRect){
             if(!(x>=m_width or y>=m_height)){
                 if(m_typeList[m_tileSet[x][y]].solid){
                    // cout<<playerRect.Bottom<<"p<"<<(x+1)*TILEWIDTH<<" "<<playerRect.Right<<"p>"<<x*TILEWIDTH;
-                    if(y*TILEHEIGHT<=playerRect.Bottom&&y*TILEHEIGHT>=playerRect.Top){
+                    if(y*TILEHEIGHT<=playerRect.Top+playerRect.Height&&y*TILEHEIGHT>=playerRect.Top){
                         m_player.UnlockJump();
                         m_player.BottomCollision(true);
                         //if(m_player.GetVelx()>=0)m_player.setAnimRow(0);
@@ -210,7 +129,7 @@ bool MapTile::collisionTriangle(const sf::IntRect playerRect){
                         //else m_player.animRow(1);
                         CollisionVertical= true;
                     }
-                    if((y+1)*TILEHEIGHT>=playerRect.Top&&(y+1)*TILEHEIGHT<=playerRect.Bottom){
+                    if((y+1)*TILEHEIGHT>=playerRect.Top&&(y+1)*TILEHEIGHT<=playerRect.Top+playerRect.Height){
                         cout<<" ====tete==";
                         m_player.ResetVely();
                         CollisionVertical=true;
@@ -226,14 +145,14 @@ bool MapTile::collisionTriangle(const sf::IntRect playerRect){
 void MapTile::draw(){
 ///    cout<<"x"<<m_player.GetPosition().x<<"y"<<m_player.GetPosition().y<<"Velx"<<m_player.GetVelx()<<"Vely"<<m_player.GetVely()<<endl;
     unsigned char typeNbr;
-    sf::FloatRect views=m_app.GetView().GetRect();
+    sf::FloatRect views=m_app.GetView().GetViewport();
     int maxHeight, minHeight, maxWidth, minWidth;
     // (10*40+80-(10*40))/40
     //(400+80-400)/40
     minHeight=views.Top/TILEHEIGHT-1;
-    maxHeight=views.Bottom/TILEHEIGHT+1;
+    maxHeight=views.Top+views.Height/TILEHEIGHT+1;
     minWidth=views.Left/TILEWIDTH-1;
-    maxWidth=views.Right/TILEWIDTH+1;
+    maxWidth=views.Left+views.Width/TILEWIDTH+1;
     if(minHeight<0)minHeight=0;
     if(maxHeight>m_height)maxHeight=m_height;
     if(minWidth<0)minWidth=0;
@@ -251,7 +170,6 @@ void MapTile::draw(){
 			}
 		}
     if(m_triangle)m_app.Draw(m_triangleSprite);
-    m_app.Draw(m_player);
 }
 Type & MapTile::operator () (int X, int Y){
     return m_typeList[m_tileSet[X][Y]];

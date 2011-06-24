@@ -8,7 +8,7 @@ int main(){
     Clock.Reset();
     float frame= 0.05;
     sf::RenderWindow App(sf::VideoMode(SCREENWIDTH, SCREENHEIGHT, 32), "Mario MRUA", sf::Style::Close | sf::Style::Titlebar );
-    App.UseVerticalSync(true);
+    App.EnableVerticalSync(true);
     App.SetFramerateLimit(60);
     bool menu=true,record=false,mouse=false;
 
@@ -19,7 +19,7 @@ int main(){
     originePoint.SetPosition(0,0);
 
     string Message;
-    sf::String Text(Message, sf::Font::GetDefaultFont(), 12);
+    sf::Text Text(Message, sf::Font::GetDefaultFont(), 12);
 
     vector<dataPoint*> dataList;
 
@@ -78,7 +78,7 @@ int main(){
             if ((App.GetInput().IsKeyDown(sf::Key::X)&&record)||(dataList.size()>200&&record)){
                 record=false;
                  stringstream ss;
-                 ss<<sf::Randomizer::Random(0000, 10000);
+                 ss<<rand()/RAND_MAX * (10000) ;
                 string const nomFichier("data/data"+ss.str()+".csv");
                 Message=nomFichier+" saved.";
                 ofstream monFlux(nomFichier.c_str());
@@ -91,14 +91,14 @@ int main(){
             if (App.GetInput().IsKeyDown(sf::Key::Up))newPlayer.Jump();
             newPlayer.Turn(App.GetInput().IsKeyDown(sf::Key::Left),App.GetInput().IsKeyDown(sf::Key::Right));
             myMap.thinkPlayer();
-            View2.SetFromRect(newPlayer.GetViewRect());
-            stop_on.SetPosition(newPlayer.GetViewRect().Left,newPlayer.GetViewRect().Bottom-stop_on.GetSize().y);
-            Text.SetText(Message);
+            View2.SetViewport(newPlayer.GetViewRect());
+            stop_on.SetPosition(newPlayer.GetViewRect().Left,(newPlayer.GetViewRect().Top-newPlayer.GetViewRect().Height)-stop_on.GetSize().y);
+            Text.SetString(Message);
             Text.SetPosition(newPlayer.GetViewRect().Left,newPlayer.GetViewRect().Top);
         }
         sf::Event event;
         unsigned int e=0;
-        while (App.GetEvent(event)){
+        while (App.PollEvent(event)){
             if(event.Type == sf::Event::KeyPressed)menu=false;
             if (event.Type == sf::Event::Closed) App.Close();
             e++;
@@ -110,6 +110,7 @@ int main(){
             myMap.draw();
             for(int it=0;it<dataList.size();it++)App.Draw(*dataList.at(it));
             App.Draw(originePoint);
+            App.Draw(newPlayer);
             App.Draw(stop_on);
             App.Draw(Text);
         }

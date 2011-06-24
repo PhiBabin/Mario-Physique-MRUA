@@ -54,7 +54,7 @@ public:
 	//!Retourne le nombre de frame
 	virtual unsigned int getSize() const;
 protected:
-	virtual void Render(sf::RenderTarget& Target) const;
+	//virtual void Render(sf::RenderTarget& target, sf::Renderer& renderer) const;
 
 private:
 	//!Représente le nombre de frame dans l'animation

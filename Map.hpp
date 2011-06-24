@@ -17,7 +17,6 @@ class MapTile{
         bool collisionTile(const float x, const float y);
         void thinkPlayer();
 //        void gravity();
-        bool collisionTriangle(const sf::IntRect playerRect);
 
         bool collisionPlayerGeneral(const sf::IntRect playerRect);
         bool collisionPlayerHorizontal(const sf::IntRect playerRect);
