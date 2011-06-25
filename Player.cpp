@@ -17,10 +17,10 @@ sf::FloatRect Player::GetViewRect(){
     return sf::FloatRect(GetPosition().x-SCREENWIDTH/4,GetPosition().y-SCREENHEIGHT/4,SCREENWIDTH/2,SCREENHEIGHT/2);
 }
 sf::IntRect Player::GetMovedPlayerRect(const float moveX,const float moveY){
-  return sf::IntRect(GetPosition().x+moveX,GetPosition().y+moveY,PLAYERCOLLISIONWIDTH+moveX,PLAYERCOLLISIONHEIGHT+moveY);
+  return sf::IntRect(GetPosition().x+moveX,GetPosition().y+moveY,PLAYERCOLLISIONWIDTH,PLAYERCOLLISIONHEIGHT);
 }
 void Player::Gravity(){
-    if(m_vely<200)m_vely+=250*m_app->GetFrameTime();
+    if(m_vely<200)m_vely+=GRAVITY*m_app->GetFrameTime()/1000;
 }
 void Player::Jump(){
     if(!m_jumpLock&&m_vely>-500){
@@ -65,10 +65,10 @@ void Player::SetPoint(bool values){
 bool Player::GetPoint(){
     return m_point;
 }
-int Player::GetVelx(){
+float Player::GetVelx(){
     return m_velx;
 }
-int Player::GetVely(){
+float Player::GetVely(){
     return m_vely;
 }
 void Player::BottomCollision(bool is){

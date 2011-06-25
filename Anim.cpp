@@ -69,7 +69,7 @@ bool Anim::isPlaying() const
 
 void Anim::setDelay(const float &delay)
 {
-	m_delay=delay;
+	m_delay=delay*1000;
 }
 
 float Anim::delay() const

@@ -18,8 +18,8 @@ MapTile::MapTile(sf::RenderWindow &App,const char* tileset,const char* image_sch
 //    m_player.BottomCollision(false);
      float movHor=0;
      float movVer=0;
-     float movHorTest=m_player.GetVelx()*m_app.GetFrameTime();
-     float movVerTest=m_player.GetVely()*m_app.GetFrameTime();
+     float movHorTest=m_player.GetVelx()*m_app.GetFrameTime()/1000;
+     float movVerTest=m_player.GetVely()*m_app.GetFrameTime()/1000;
 
     if(!collisionPlayerHorizontal(m_player.GetMovedPlayerRect(movHorTest,0))){
        //m_player.Move(m_player.GetVelx()*m_app.GetFrameTime(),0);
@@ -30,7 +30,7 @@ MapTile::MapTile(sf::RenderWindow &App,const char* tileset,const char* image_sch
        // m_player.Move(0,m_player.GetVely()*m_app.GetFrameTime());
        movVer=movVerTest;
     }
-    //if(!collisionPlayerGeneral(m_player.GetMovedPlayerRect(movHor,movVer)))m_player.Move(movHor,movVer);
+    if(!collisionPlayerGeneral(m_player.GetMovedPlayerRect(movHor,movVer)))m_player.Move(movHor,movVer);
   //  collisionPlayer();
  }
 
@@ -49,12 +49,10 @@ MapTile::MapTile(sf::RenderWindow &App,const char* tileset,const char* image_sch
         for(int x=minWidth;x<=maxWidth;x++){
             if(!(x>=m_width or y>=m_height)){
                 if(m_typeList[m_tileSet[x][y]].solid){
-                   sf::IntRect  theTile(x*TILEWIDTH,y*TILEHEIGHT,(1)*TILEWIDTH,(1)*TILEHEIGHT);
+                   sf::IntRect  theTile(x*TILEWIDTH,y*TILEHEIGHT,TILEWIDTH,TILEHEIGHT);
                     if(playerRect.Intersects(theTile)){
-                       cout<<"i hope it work";
                        return true;
                     }
-                    cout<<endl;
                 }
             }
         }

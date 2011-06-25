@@ -17,8 +17,8 @@ class Player:public ImgAnim{
         void Turn(bool left, bool right);
         void SetPoint(bool values);
         bool GetPoint();
-        int GetVelx();
-        int GetVely();
+        float GetVelx();
+        float GetVely();
         void BottomCollision(bool is);
         void ResetVely();
       //void GetPosition();
@@ -26,8 +26,8 @@ class Player:public ImgAnim{
         sf::Image m_imgPlayer;
         sf::RenderWindow *m_app;
         //ImgAnim m_spritePlayer;
-        int m_velx;
-        int m_vely;
+        float m_velx;
+        float m_vely;
         bool m_point;
         bool m_jumpLock;
         bool m_colBot;

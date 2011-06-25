@@ -6,7 +6,7 @@ int main(){
     float Time = Clock.GetElapsedTime();
     float lastFrame;
     Clock.Reset();
-    float frame= 0.05;
+    float frame= 50;
     sf::RenderWindow App(sf::VideoMode(SCREENWIDTH, SCREENHEIGHT, 32), "Mario MRUA");
     App.EnableVerticalSync(true);
     App.SetFramerateLimit(60);
@@ -83,7 +83,7 @@ int main(){
                 string const nomFichier("data/data"+ss.str()+".csv");
                 Message=nomFichier+" saved.";
                 ofstream monFlux(nomFichier.c_str());
-                monFlux<<"\"Temps(s)\",\"S(Px)\""<<endl;
+                monFlux<<"\"Temps(Milliseconde)\",\"S(Px)\""<<endl;
                 for(unsigned int it=0;it<dataList.size();it++)
                 //monFlux<<"\""<<round(dataList.at(it)->GetTime())<<","<<10000000*(dataList.at(it)->GetTime()-round(dataList.at(it)->GetTime()))<<"\""<<",\""<<round(dataList.at(it)->GetPosition().y-originePoint.y)<<"\""<< endl;
                 monFlux<<"\""<<dataList.at(it)->GetTime()<<"\""<<",\""<<-1*(dataList.at(it)->GetPosition().y-originePoint.GetPosition().y)<<"\""<< endl;
