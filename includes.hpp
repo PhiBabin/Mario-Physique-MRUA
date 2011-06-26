@@ -9,6 +9,10 @@
 #define TILESETHEIGHT 8 //Number of tile in a tile set image
 #define GRAVITY 350.f //Gravity force
 
+#define LEFT true
+#define RIGHT false
+
+
 #define PLAYERCOLLISIONWIDTH 17
 #define PLAYERCOLLISIONHEIGHT 17
 #include <iostream>

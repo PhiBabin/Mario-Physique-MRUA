@@ -1,12 +1,8 @@
 
 #include "Map.hpp"
 
-MapTile::MapTile(sf::RenderWindow &App,const char* tileset,const char* image_schema,const char* image_corr,const char* tileprop, Player &newPlayer):m_app(App),m_player(newPlayer),m_triangle(true){
-   m_triangleSprite.AddPoint(100, 511,  sf::Color(255, 0, 0), sf::Color(0, 128, 128));
-   m_triangleSprite.AddPoint(150, 460,  sf::Color(255, 0, 0), sf::Color(0, 128, 128));
-   m_triangleSprite.AddPoint(230, 511,  sf::Color(255, 0, 0), sf::Color(0, 128, 128));
-   m_triangleSprite.SetColor(sf::Color(255, 255, 255, 200));
-    loadMap( tileset,image_schema,image_corr,tileprop,false);
+MapTile::MapTile(sf::RenderWindow &App,const char* tileset,const char* image_schema,const char* image_corr,const char* tileprop, Player &newPlayer):m_app(App),m_player(newPlayer){
+   loadMap( tileset,image_schema,image_corr,tileprop);
 }
  bool MapTile::collisionTile(const float x, const float y){
     return m_typeList[m_tileSet[x/TILESETWIDTH][y/TILEHEIGHT]].solid;
@@ -143,16 +139,13 @@ MapTile::MapTile(sf::RenderWindow &App,const char* tileset,const char* image_sch
 void MapTile::draw(){
     cout<<"x"<<m_player.GetPosition().x<<"y"<<m_player.GetPosition().y<<"Velx"<<m_player.GetVelx()<<"Vely"<<m_player.GetVely()<<endl;
     unsigned char typeNbr;
-    //sf::FloatRect views=m_app.GetView().GetViewport();
-    //sf::FloatRect views=sf::FloatRect(0,0,600,600);
     sf::FloatRect views=sf::FloatRect(
     m_app.GetView().GetCenter().x-SCREENWIDTH/4,
     m_app.GetView().GetCenter().y-SCREENHEIGHT/4,
     SCREENWIDTH/2,
     SCREENHEIGHT/2);
     int maxHeight, minHeight, maxWidth, minWidth;
-    // (10*40+80-(10*40))/40
-    //(400+80-400)/40
+
     minHeight=views.Top/TILEHEIGHT-1;
     maxHeight=(views.Top+views.Height)/TILEHEIGHT+1;
     minWidth=views.Left/TILEWIDTH-1;
@@ -173,7 +166,6 @@ void MapTile::draw(){
 				if(m_typeList[typeNbr].visible)m_app.Draw(m_drawSprite);
 			}
 		}
-    if(m_triangle)m_app.Draw(m_triangleSprite);
 }
 Type & MapTile::operator () (int X, int Y){
     return m_typeList[m_tileSet[X][Y]];
@@ -187,8 +179,7 @@ Type & MapTile::operator () (int X, int Y){
         return 0;
  }
 //Tileset: image du niveau image_schema: Liste des tiles (petit) image_corr: liste des tiles correspondant tileprop: fichier des propriété
-void MapTile::loadMap(const char* tileset,const char* image_schema,const char* image_corr,const char* tileprop,const bool triangle){
-    m_triangle=triangle;
+void MapTile::loadMap(const char* tileset,const char* image_schema,const char* image_corr,const char* tileprop){
     sf::Image tilesetImg,image_schemaImg;
     tilesetImg.LoadFromFile(tileset);
 	m_typeList.erase(m_typeList.begin(),m_typeList.end());
@@ -202,7 +193,7 @@ void MapTile::loadMap(const char* tileset,const char* image_schema,const char* i
         for(unsigned int it2=0;it2<image_schemaImg.GetHeight();it2++){
             Type newTile;
             newTile.colorPix = image_schemaImg.GetPixel(it, it2);
-            newTile.zoneRect=sf::IntRect(it*TILEWIDTH, it2*TILEHEIGHT, TILEWIDTH*(it+1), TILEHEIGHT*(it2+1));
+            newTile.zoneRect=sf::IntRect(it*TILEWIDTH, it2*TILEHEIGHT, TILEWIDTH, TILEHEIGHT);
             m_typeList.insert(m_typeList.end(),newTile);
         }
     }

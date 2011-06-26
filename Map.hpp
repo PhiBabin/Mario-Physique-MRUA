@@ -9,14 +9,13 @@ struct Type{
 class MapTile{
 	public:
         MapTile(sf::RenderWindow &App,const char* tileset,const char* image_schema,const char* image_corr,const char* tileprop, Player &newPlayer);
-		void loadMap(const char* tileset,const char* image_schema,const char* image_corr,const char* tileprop,const bool triangle);		//loads the map from a file
+		void loadMap(const char* tileset,const char* image_schema,const char* image_corr,const char* tileprop);		//loads the map from a file
 		void setPlayer(Player &newPlayer);
 		void draw();
         Type & operator () (int X, int Y);
         unsigned char findType(sf::Color Pix);
         bool collisionTile(const float x, const float y);
         void thinkPlayer();
-//        void gravity();
 
         bool collisionPlayerGeneral(const sf::IntRect playerRect);
         bool collisionPlayerHorizontal(const sf::IntRect playerRect);
@@ -31,8 +30,6 @@ class MapTile{
 		vector <vector<unsigned char> > m_tileSet;
 		vector <Type> m_typeList;
 		Player &m_player;
-		bool m_triangle;
-		sf::Shape m_triangleSprite;
 
 };
 
