@@ -11,7 +11,6 @@ class MapTile{
 	public:
         MapTile(sf::RenderWindow &App,const char* tileset,const char* image_schema,const char* image_corr,const char* tileprop, Player &newPlayer);
 		void loadMap(const char* tileset,const char* image_schema,const char* image_corr,const char* tileprop);		//loads the map from a file
-		void setPlayer(Player &newPlayer);
 		void draw();
         unsigned char findType(sf::Color Pix);
         bool collisionTile(const float x, const float y);
@@ -28,7 +27,7 @@ class MapTile{
 		vector <vector<Type> > m_tileSet;
 		vector <Type> m_typeList;
 		Player &m_player;
-
+		sf::RenderImage m_map;
 };
 
 

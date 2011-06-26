@@ -4,9 +4,6 @@
 MapTile::MapTile(sf::RenderWindow &App,const char* tileset,const char* image_schema,const char* image_corr,const char* tileprop, Player &newPlayer):m_app(App),m_player(newPlayer){
    loadMap( tileset,image_schema,image_corr,tileprop);
 }
-// bool MapTile::collisionTile(const float x, const float y){
-//    return m_typeList[m_tileSet[x/TILESETWIDTH][y/TILEHEIGHT]].solid;
-// }
  bool MapTile::collisionTile(float x, float y){
     return m_tileSet[x][y].solid;
  }
@@ -24,7 +21,6 @@ MapTile::MapTile(sf::RenderWindow &App,const char* tileset,const char* image_sch
        movVer=movVerTest;
     }
     if(!collisionPlayerGeneral(m_player.GetMovedPlayerRect(movHor,movVer)))m_player.Move(movHor,movVer);
-  //  collisionPlayer();
  }
 
  bool MapTile::collisionPlayerGeneral(const sf::IntRect playerRect){
@@ -71,14 +67,11 @@ MapTile::MapTile(sf::RenderWindow &App,const char* tileset,const char* image_sch
             if(!(x>=m_width or y>=m_height)){
                 if(m_tileSet[x][y].solid){
                     if(x*TILEWIDTH>=playerRect.Left&&x*TILEWIDTH<=playerRect.Left+playerRect.Width){
-                        cout<<" ====Droit==";
                         CollisionHorizontal= true;
                     }
                     if((x+1)*TILEWIDTH<=playerRect.Left+playerRect.Width&&(x+1)*TILEWIDTH>=playerRect.Left){
-                        cout<<" ====Gauche==";
                         CollisionHorizontal= true;
                     }
-                    cout<<endl;
                 }
             }
         }
@@ -108,11 +101,9 @@ MapTile::MapTile(sf::RenderWindow &App,const char* tileset,const char* image_sch
                         CollisionVertical= true;
                     }
                     if((y+1)*TILEHEIGHT>=playerRect.Top&&(y+1)*TILEHEIGHT<=playerRect.Top+playerRect.Height){
-                        cout<<" ====tete==";
                         m_player.ResetVely();
                         CollisionVertical=true;
                     }
-                    cout<<endl;
                 }
             }
         }
@@ -138,12 +129,7 @@ void MapTile::draw(){
     if(minWidth<0)minWidth=0;
     if(maxWidth>m_width)maxWidth=m_width;
     //! On affiche les tile de la carte
-    for(int y=minHeight;y<maxHeight;y++){
-        for(int x=minWidth;x<maxWidth;x++){
-            if(m_tileSet[x][y].visible)m_app.Draw(m_tileSet[x][y].tile);
-				if(m_typeList[typeNbr].visible)m_app.Draw(m_drawSprite);
-			}
-		}
+    m_app.Draw(sf::Sprite(m_map.GetImage()));
 }
  unsigned char MapTile::findType(sf::Color Pix){
         for(unsigned char it=0;it<m_typeList.size();it++){
@@ -201,9 +187,15 @@ void MapTile::loadMap(const char* tileset,const char* image_schema,const char* i
              m_tileSet[it].insert( m_tileSet[it].end(),theNewTile);
         }
     }
-
+    m_map.Create(m_width*TILEWIDTH,m_height*TILEHEIGHT);
+    m_map.SetSmooth(false);
     m_drawSprite.SetImage(m_ImgTypeTile);
+    for(int y=0;y<m_height;y++){
+        for(int x=0;x<m_width;x++){
+            if(m_tileSet[x][y].visible)m_map.Draw(m_tileSet[x][y].tile);
+        }
+    }
+    m_map.Display();
+
 }
-void MapTile::setPlayer(Player &newPlayer){
-    m_player=newPlayer;
-}
+

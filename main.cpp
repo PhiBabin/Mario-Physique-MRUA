@@ -49,6 +49,9 @@ int main(){
     /// Set the view width and height
     sf::View View2(sf::FloatRect(0,0,SCREENWIDTH/2,SCREENHEIGHT/2));
 
+//    ///Check for the image rendering
+//     if (!sf::RenderImage::IsAvailable()) return -1;
+
     /// Create the Window
     sf::RenderWindow App(sf::VideoMode(SCREENWIDTH, SCREENHEIGHT, 32), "Mario MRUA");
 
