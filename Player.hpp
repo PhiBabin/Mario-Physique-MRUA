@@ -11,8 +11,6 @@ class Player:public ImgAnim{
         void Jump();
         void UnlockJump();
         void Turn(bool left, bool right);
-        void SetPoint(bool values);
-        bool GetPoint();
         float GetVelx();
         float GetVely();
         void BottomCollision(bool is);

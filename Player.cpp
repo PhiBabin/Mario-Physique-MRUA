@@ -57,12 +57,6 @@ void Player::Turn(bool left, bool right){
         m_velx=0;
     }
 }
-void Player::SetPoint(bool values){
-    m_point=values;
-}
-bool Player::GetPoint(){
-    return m_point;
-}
 float Player::GetVelx(){
     return m_velx;
 }

@@ -4,26 +4,23 @@
 MapTile::MapTile(sf::RenderWindow &App,const char* tileset,const char* image_schema,const char* image_corr,const char* tileprop, Player &newPlayer):m_app(App),m_player(newPlayer){
    loadMap( tileset,image_schema,image_corr,tileprop);
 }
- bool MapTile::collisionTile(const float x, const float y){
-    return m_typeList[m_tileSet[x/TILESETWIDTH][y/TILEHEIGHT]].solid;
+// bool MapTile::collisionTile(const float x, const float y){
+//    return m_typeList[m_tileSet[x/TILESETWIDTH][y/TILEHEIGHT]].solid;
+// }
+ bool MapTile::collisionTile(float x, float y){
+    return m_tileSet[x][y].solid;
  }
  void MapTile::thinkPlayer(){
-//
-//    if(m_player.GetVelx()>=0)m_player.setAnimRow(2);
-//    else m_player.setAnimRow(3);
-//    m_player.BottomCollision(false);
      float movHor=0;
      float movVer=0;
      float movHorTest=m_player.GetVelx()*m_app.GetFrameTime()/1000;
      float movVerTest=m_player.GetVely()*m_app.GetFrameTime()/1000;
 
     if(!collisionPlayerHorizontal(m_player.GetMovedPlayerRect(movHorTest,0))){
-       //m_player.Move(m_player.GetVelx()*m_app.GetFrameTime(),0);
        movHor=movHorTest;
-    }//cout<<"help"<<endl;
+    }
     if(!collisionPlayerVertical(m_player.GetMovedPlayerRect(0,movVerTest))){
         m_player.Gravity();
-       // m_player.Move(0,m_player.GetVely()*m_app.GetFrameTime());
        movVer=movVerTest;
     }
     if(!collisionPlayerGeneral(m_player.GetMovedPlayerRect(movHor,movVer)))m_player.Move(movHor,movVer);
@@ -41,10 +38,11 @@ MapTile::MapTile(sf::RenderWindow &App,const char* tileset,const char* image_sch
     if(maxHeight>m_height)maxHeight=m_height;
     if(minWidth<0)minWidth=0;
     if(maxWidth>m_width)maxWidth=m_width;
-    for(int y=minHeight;y<=maxHeight;y++){
+
+     for(int y=minHeight;y<=maxHeight;y++){
         for(int x=minWidth;x<=maxWidth;x++){
             if(!(x>=m_width or y>=m_height)){
-                if(m_typeList[m_tileSet[x][y]].solid){
+                if(m_tileSet[x][y].solid){
                    sf::IntRect  theTile(x*TILEWIDTH,y*TILEHEIGHT,TILEWIDTH,TILEHEIGHT);
                     if(playerRect.Intersects(theTile)){
                        return true;
@@ -53,13 +51,10 @@ MapTile::MapTile(sf::RenderWindow &App,const char* tileset,const char* image_sch
             }
         }
     }
-    //cout<<"Stop Blabla2"<<endl;
-    //return Collision;
     return false;
  }
 
  bool MapTile::collisionPlayerHorizontal(const sf::IntRect playerRect){
-   // cout<< "hor x1="<<playerRect.Left<<" y1="<<playerRect.Top<<" x2="<<playerRect.Right<<" y2="<<playerRect.Bottom<<endl;
     int maxHeight, minHeight, maxWidth, minWidth;
     bool CollisionHorizontal=false;
     minHeight=playerRect.Top/TILEHEIGHT;
@@ -74,9 +69,7 @@ MapTile::MapTile(sf::RenderWindow &App,const char* tileset,const char* image_sch
     for(int y=minHeight;y<=maxHeight;y++){
         for(int x=minWidth;x<=maxWidth;x++){
             if(!(x>=m_width or y>=m_height)){
-                if(m_typeList[m_tileSet[x][y]].solid){
-                   // cout<<playerRect.Left<<","<<playerRect.Right<<endl;
-                    //cout<<playerRect.Left<<"p<"<<(x+1)*TILEWIDTH<<" "<<playerRect.Right<<"p>"<<x*TILEWIDTH;
+                if(m_tileSet[x][y].solid){
                     if(x*TILEWIDTH>=playerRect.Left&&x*TILEWIDTH<=playerRect.Left+playerRect.Width){
                         cout<<" ====Droit==";
                         CollisionHorizontal= true;
@@ -90,14 +83,12 @@ MapTile::MapTile(sf::RenderWindow &App,const char* tileset,const char* image_sch
             }
         }
     }
-    //cout<<"Stop Blabla2"<<endl;
     return CollisionHorizontal;
  }
  bool MapTile::collisionPlayerVertical(const sf::IntRect playerRect){
-    //cout<< "ver x1="<<playerRect.Left<<" y1="<<playerRect.Top<<" x2="<<playerRect.Right<<" y2="<<playerRect.Bottom<<endl;
     int maxHeight, minHeight, maxWidth, minWidth;
     bool CollisionVertical=false;
- //   cout<<"Start"<<endl;
+
     minHeight=playerRect.Top/TILEHEIGHT;
     minWidth=playerRect.Left/TILEWIDTH;
     maxHeight=(playerRect.Top+playerRect.Height-1)/TILEHEIGHT;
@@ -109,18 +100,11 @@ MapTile::MapTile(sf::RenderWindow &App,const char* tileset,const char* image_sch
     if(maxWidth>m_width)maxWidth=m_width;
     for(int y=minHeight;y<=maxHeight;y++){
         for(int x=minWidth;x<=maxWidth;x++){
-//            cout<<y*TILEWIDTH<<" "<<(y+1)*TILEWIDTH<<endl;
-//            cout<<y*TILEWIDTH<<"<"<<playerRect.Bottom<<">"<<playerRect.Top<<endl;
-//            cout<<(y+1)*TILEWIDTH<<"<"<<playerRect.Bottom<<">"<<playerRect.Top<<endl;
             if(!(x>=m_width or y>=m_height)){
-                if(m_typeList[m_tileSet[x][y]].solid){
-                   // cout<<playerRect.Bottom<<"p<"<<(x+1)*TILEWIDTH<<" "<<playerRect.Right<<"p>"<<x*TILEWIDTH;
+                if(m_tileSet[x][y].solid){
                     if(y*TILEHEIGHT<=playerRect.Top+playerRect.Height&&y*TILEHEIGHT>=playerRect.Top){
                         m_player.UnlockJump();
                         m_player.BottomCollision(true);
-                        //if(m_player.GetVelx()>=0)m_player.setAnimRow(0);
-                        //else m_player.setAnimRow(1);
-                        //else m_player.animRow(1);
                         CollisionVertical= true;
                     }
                     if((y+1)*TILEHEIGHT>=playerRect.Top&&(y+1)*TILEHEIGHT<=playerRect.Top+playerRect.Height){
@@ -133,7 +117,6 @@ MapTile::MapTile(sf::RenderWindow &App,const char* tileset,const char* image_sch
             }
         }
     }
-    //cout<<"Stop Blabla2"<<endl;
     return CollisionVertical;
  }
 void MapTile::draw(){
@@ -154,21 +137,13 @@ void MapTile::draw(){
     if(maxHeight>m_height)maxHeight=m_height;
     if(minWidth<0)minWidth=0;
     if(maxWidth>m_width)maxWidth=m_width;
-    bool DeclarTypeNbr=true;
-		for(int y=minHeight;y<maxHeight;y++){
-			for(int x=minWidth;x<maxWidth;x++){
-				m_drawSprite.SetPosition(x*TILEWIDTH,y*TILEHEIGHT);
-				if(m_tileSet[x][y]!=typeNbr||DeclarTypeNbr){
-				    typeNbr=m_tileSet[x][y];
-                    m_drawSprite.SetSubRect(m_typeList[typeNbr].zoneRect);
-				}
-				if(DeclarTypeNbr)DeclarTypeNbr=false;
+    //! On affiche les tile de la carte
+    for(int y=minHeight;y<maxHeight;y++){
+        for(int x=minWidth;x<maxWidth;x++){
+            if(m_tileSet[x][y].visible)m_app.Draw(m_tileSet[x][y].tile);
 				if(m_typeList[typeNbr].visible)m_app.Draw(m_drawSprite);
 			}
 		}
-}
-Type & MapTile::operator () (int X, int Y){
-    return m_typeList[m_tileSet[X][Y]];
 }
  unsigned char MapTile::findType(sf::Color Pix){
         for(unsigned char it=0;it<m_typeList.size();it++){
@@ -208,19 +183,27 @@ void MapTile::loadMap(const char* tileset,const char* image_schema,const char* i
         if(Solid==1)m_typeList[it].solid=true;
         else m_typeList[it].solid=false;
 	}
+
+	int theTile;
     for(int it=0;it<m_width;it++){
-        vector<unsigned char> tileList;
-        m_tileSet.insert(m_tileSet.end(),tileList);
+        vector<Type> tileList2;
+        m_tileSet.insert(m_tileSet.end(),tileList2);
         for(int it2=0;it2< m_height;it2++){
-             m_tileSet[it].insert( m_tileSet[it].end(),findType(tilesetImg.GetPixel(it, it2)));
+            theTile=findType(tilesetImg.GetPixel(it, it2));
+///            if(theTile==typeSpawn1){
+///                sf::Vector2f m_spawnLocationOne(it*TILEWIDTH ,(it2+1)*TILEHEIGHT-PLAYERCOLLISIONHEIGHT);
+///                m_playerOne->SetPosition(m_spawnLocationOne);
+///            }
+            Type theNewTile= m_typeList[theTile];
+            theNewTile.tile.SetPosition(it*TILEWIDTH,it2*TILEHEIGHT);
+            theNewTile.tile.SetImage(m_ImgTypeTile);
+            theNewTile.tile.SetSubRect(m_typeList[theTile].zoneRect);
+             m_tileSet[it].insert( m_tileSet[it].end(),theNewTile);
         }
     }
 
     m_drawSprite.SetImage(m_ImgTypeTile);
 }
-//void MapTile::gravity(){
-//    m_player.Move(0,GRAVITY*m_app.GetFrameTime());
-//}
 void MapTile::setPlayer(Player &newPlayer){
     m_player=newPlayer;
 }
