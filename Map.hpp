@@ -26,6 +26,7 @@ class MapTile{
 		sf::Sprite m_drawSprite;
 		vector <vector<Type> > m_tileSet;
 		vector <Type> m_typeList;
+		sf::Vector2f m_spawnLocationOne;
 		Player &m_player;
 		sf::RenderImage m_map;
 };

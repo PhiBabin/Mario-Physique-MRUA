@@ -112,22 +112,6 @@ MapTile::MapTile(sf::RenderWindow &App,const char* tileset,const char* image_sch
  }
 void MapTile::draw(){
     cout<<"x"<<m_player.GetPosition().x<<"y"<<m_player.GetPosition().y<<"Velx"<<m_player.GetVelx()<<"Vely"<<m_player.GetVely()<<endl;
-    unsigned char typeNbr;
-    sf::FloatRect views=sf::FloatRect(
-    m_app.GetView().GetCenter().x-SCREENWIDTH/4,
-    m_app.GetView().GetCenter().y-SCREENHEIGHT/4,
-    SCREENWIDTH/2,
-    SCREENHEIGHT/2);
-    int maxHeight, minHeight, maxWidth, minWidth;
-
-    minHeight=views.Top/TILEHEIGHT-1;
-    maxHeight=(views.Top+views.Height)/TILEHEIGHT+1;
-    minWidth=views.Left/TILEWIDTH-1;
-    maxWidth=(views.Left+views.Width)/TILEWIDTH+1;
-    if(minHeight<0)minHeight=0;
-    if(maxHeight>m_height)maxHeight=m_height;
-    if(minWidth<0)minWidth=0;
-    if(maxWidth>m_width)maxWidth=m_width;
     //! On affiche les tile de la carte
     m_app.Draw(sf::Sprite(m_map.GetImage()));
 }
@@ -161,9 +145,10 @@ void MapTile::loadMap(const char* tileset,const char* image_schema,const char* i
     FILE* tilePropFile = NULL;
 	tilePropFile = fopen(tileprop, "r");
 	if(tilePropFile==NULL){ cerr<<"[FATAL ERROR] Map not found."<<endl; exit(1);}
-	int Visible,Solid;
+	int Visible,Solid,Spawn,typeSpawn1;
 	for(unsigned int it=0;it<m_typeList.size();it++){
-        fscanf(tilePropFile, "%d  %d",&Visible,&Solid);
+        fscanf(tilePropFile, "%d  %d  %d",&Visible,&Solid,&Spawn);
+        if(Spawn==1)typeSpawn1=it;
         if(Visible==1)m_typeList[it].visible=true;
         else m_typeList[it].visible=false;
         if(Solid==1)m_typeList[it].solid=true;
@@ -176,10 +161,10 @@ void MapTile::loadMap(const char* tileset,const char* image_schema,const char* i
         m_tileSet.insert(m_tileSet.end(),tileList2);
         for(int it2=0;it2< m_height;it2++){
             theTile=findType(tilesetImg.GetPixel(it, it2));
-///            if(theTile==typeSpawn1){
-///                sf::Vector2f m_spawnLocationOne(it*TILEWIDTH ,(it2+1)*TILEHEIGHT-PLAYERCOLLISIONHEIGHT);
-///                m_playerOne->SetPosition(m_spawnLocationOne);
-///            }
+            if(theTile==typeSpawn1){
+                sf::Vector2f m_spawnLocationOne(it*TILEWIDTH ,(it2+1)*TILEHEIGHT-PLAYERCOLLISIONHEIGHT);
+                m_player.SetPosition(m_spawnLocationOne);
+            }
             Type theNewTile= m_typeList[theTile];
             theNewTile.tile.SetPosition(it*TILEWIDTH,it2*TILEHEIGHT);
             theNewTile.tile.SetImage(m_ImgTypeTile);
@@ -188,7 +173,6 @@ void MapTile::loadMap(const char* tileset,const char* image_schema,const char* i
         }
     }
     m_map.Create(m_width*TILEWIDTH,m_height*TILEHEIGHT);
-    m_map.SetSmooth(false);
     m_drawSprite.SetImage(m_ImgTypeTile);
     for(int y=0;y<m_height;y++){
         for(int x=0;x<m_width;x++){

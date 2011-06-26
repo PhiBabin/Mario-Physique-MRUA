@@ -4,7 +4,7 @@
 #define PLAYER_HPP_INCLUDED
 class Player:public ImgAnim{
     public:
-        Player(sf::Image &imgPlayer,sf::RenderWindow *app,float xInit,float yInit);
+        Player(sf::Image &imgPlayer,sf::RenderWindow *app);
         sf::IntRect GetPlayerRect();
         sf::IntRect GetMovedPlayerRect(const float moveX,const float moveY);
         void Gravity();

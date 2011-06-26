@@ -1,13 +1,11 @@
 #include "Player.hpp"
 
-Player::Player(sf::Image &imgPlayer,sf::RenderWindow *app,float xInit=100.f,float yInit=200.f)
+Player::Player(sf::Image &imgPlayer,sf::RenderWindow *app)
 : ImgAnim::ImgAnim(imgPlayer,3,4),m_app(app){
     setDelay(0.1);
     m_colBot=false;
     m_velx=0;
     m_vely=0;
-    SetX(xInit);
-    SetY(yInit);
 }
 sf::IntRect Player::GetPlayerRect(){
     return sf::IntRect(GetPosition().x,GetPosition().y,PLAYERCOLLISIONWIDTH,PLAYERCOLLISIONHEIGHT);
@@ -16,7 +14,8 @@ sf::IntRect Player::GetMovedPlayerRect(const float moveX,const float moveY){
   return sf::IntRect(GetPosition().x+moveX,GetPosition().y+moveY,PLAYERCOLLISIONWIDTH,PLAYERCOLLISIONHEIGHT);
 }
 void Player::Gravity(){
-    if(m_vely<200)m_vely+=GRAVITY*m_app->GetFrameTime()/1000;
+    ///if(m_vely<200)
+    m_vely+=GRAVITY*m_app->GetFrameTime()/1000;
 }
 void Player::Jump(){
     if(!m_jumpLock&&m_vely>-500){
