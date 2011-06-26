@@ -42,15 +42,16 @@ int main(){
 
 	MapTile myMap(App,"level11.png","tile4.png","tileimage8.png","tileprop3.txt",newPlayer);
 
-    sf::View View2(newPlayer.GetViewRect());
+    sf::View View2(sf::FloatRect(0,0,SCREENWIDTH/2,SCREENHEIGHT/2));
     while (App.IsOpened()){
         const sf::Input& Input = App.GetInput();
         if(menu){
             App.SetView(App.GetDefaultView());
         }
         else{
-            App.SetView(App.GetDefaultView());
-           // App.SetView(View2);
+            //App.SetView(App.GetDefaultView());
+///            cout<< View2.GetCenter().x-SCREENWIDTH/2<<endl;
+            App.SetView(View2);
 
 
             if(Input.IsMouseButtonDown(sf::Mouse::Left)){
@@ -92,7 +93,8 @@ int main(){
             if (App.GetInput().IsKeyDown(sf::Key::Up))newPlayer.Jump();
             newPlayer.Turn(App.GetInput().IsKeyDown(sf::Key::Left),App.GetInput().IsKeyDown(sf::Key::Right));
             myMap.thinkPlayer();
-            View2.Reset(newPlayer.GetViewRect());
+//            View2.Reset(newPlayer.GetViewRect());
+            View2.SetCenter(newPlayer.GetPosition());
             stop_on.SetPosition(newPlayer.GetViewRect().Left,(newPlayer.GetViewRect().Top-newPlayer.GetViewRect().Height)-stop_on.GetSize().y);
             Text.SetString(Message);
             Text.SetPosition(newPlayer.GetViewRect().Left,newPlayer.GetViewRect().Top);

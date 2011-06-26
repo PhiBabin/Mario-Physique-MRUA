@@ -144,14 +144,19 @@ void MapTile::draw(){
     cout<<"x"<<m_player.GetPosition().x<<"y"<<m_player.GetPosition().y<<"Velx"<<m_player.GetVelx()<<"Vely"<<m_player.GetVely()<<endl;
     unsigned char typeNbr;
     //sf::FloatRect views=m_app.GetView().GetViewport();
-    sf::FloatRect views=sf::FloatRect(0,0,600,600);
+    //sf::FloatRect views=sf::FloatRect(0,0,600,600);
+    sf::FloatRect views=sf::FloatRect(
+    m_app.GetView().GetCenter().x-SCREENWIDTH/4,
+    m_app.GetView().GetCenter().y-SCREENHEIGHT/4,
+    SCREENWIDTH/2,
+    SCREENHEIGHT/2);
     int maxHeight, minHeight, maxWidth, minWidth;
     // (10*40+80-(10*40))/40
     //(400+80-400)/40
     minHeight=views.Top/TILEHEIGHT-1;
-    maxHeight=views.Top+views.Height/TILEHEIGHT+1;
+    maxHeight=(views.Top+views.Height)/TILEHEIGHT+1;
     minWidth=views.Left/TILEWIDTH-1;
-    maxWidth=views.Left+views.Width/TILEWIDTH+1;
+    maxWidth=(views.Left+views.Width)/TILEWIDTH+1;
     if(minHeight<0)minHeight=0;
     if(maxHeight>m_height)maxHeight=m_height;
     if(minWidth<0)minWidth=0;
