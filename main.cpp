@@ -31,6 +31,10 @@ int main(){
     string Message;
     sf::Text Text(Message, MyFont, 8);
 
+    /// Create the framerate text
+    string TextInfo;
+    sf::Text DataText(Message, MyFont, 8);
+
 
     /// Load the image of the player
     sf::Image imgPlayer;
@@ -42,9 +46,17 @@ int main(){
 	imgPoint.LoadFromFile("point.png");
 
     /// Load the image and set the sprite of record button
-    sf::Image imgStop_on;
-	imgStop_on.LoadFromFile("stop_on.png");
-	sf::Sprite stop_on(imgStop_on);
+    sf::Image imgRecord;
+	imgRecord.LoadFromFile("record.png");
+	ImgAnim Record(imgRecord,2,1);
+	Record.stop();
+
+    /// Load the image and set the sprite of stop button
+    sf::Image imgStop;
+	imgStop.LoadFromFile("stop.png");
+	ImgAnim Stop(imgStop,2,1);
+	Stop.stop();
+	Stop.setFrame(1);
 
     /// Set the view width and height
     sf::View GameView(sf::FloatRect(0,0,SCREENWIDTH/2,SCREENHEIGHT/2));
@@ -60,7 +72,7 @@ int main(){
     Player newPlayer(imgPlayer,&App);
 
     /// Create the instance of the Map
-	MapTile myMap(App,"level11.png","tile.png","tileimage.png","tileprop.txt",newPlayer);
+	MapTile myMap(App,"level.png","tile.png","tileimage.png","tileprop.txt",newPlayer);
 
     /// Start window loop
     while (App.IsOpened()){
@@ -99,6 +111,8 @@ int main(){
             if (App.GetInput().IsKeyDown(sf::Key::Z)&&!record){
                 Message="Recording";
                 record=true;
+                Record.setFrame(1);
+                Stop.setFrame(0);
                 if(!mouse)originePoint.SetPosition(newPlayer.GetPosition());
                 lastFrame = Clock.GetElapsedTime();
                 Time = Clock.GetElapsedTime();
@@ -109,8 +123,10 @@ int main(){
             }
 
             /// Stop the recording
-            if ((App.GetInput().IsKeyDown(sf::Key::X)&&record)||(dataList.size()>200&&record)){
+            if ((App.GetInput().IsKeyDown(sf::Key::X)&&record)||(dataList.size()>=200&&record)){
                 record=false;
+                Record.setFrame(0);
+                Stop.setFrame(1);
                 mouse=false;
                  stringstream ss;
                  ss<<(rand()%10000)+1;;
@@ -133,12 +149,19 @@ int main(){
             GameView.SetCenter(newPlayer.GetPosition());
 
             /// Move the button on the bottom of the screen
-            stop_on.SetPosition(App.GetView().GetCenter().x-SCREENWIDTH/4,
-            (App.GetView().GetCenter().y+SCREENHEIGHT/4)-stop_on.GetSize().y);
+            Record.SetPosition(App.GetView().GetCenter().x-SCREENWIDTH/4+10.f,
+            (App.GetView().GetCenter().y+SCREENHEIGHT/4)-Record.GetSize().y-5.f);
+            Stop.SetPosition(App.GetView().GetCenter().x-SCREENWIDTH/4+70.f,
+            (App.GetView().GetCenter().y+SCREENHEIGHT/4)-Stop.GetSize().y-5.f);
 
             /// Update and position the information text
             Text.SetString(Message);
             Text.SetPosition(App.GetView().GetCenter().x-SCREENWIDTH/4, App.GetView().GetCenter().y-SCREENHEIGHT/4);
+            stringstream ss;
+            ss<<dataList.size();
+            TextInfo=ss.str()+"/200";
+            DataText.SetString(TextInfo);
+            DataText.SetPosition(App.GetView().GetCenter().x+SCREENWIDTH/4-50.f, App.GetView().GetCenter().y-SCREENHEIGHT/4);
         }
         /// Clear the screen
         App.Clear();
@@ -155,9 +178,11 @@ int main(){
             /// Display the player
             App.Draw(newPlayer);
             /// Display the menu
-            App.Draw(stop_on);
+            App.Draw(Record);
+            App.Draw(Stop);
             /// Display the information text
             App.Draw(Text);
+            App.Draw(DataText);
         }
         App.Display();
     }
