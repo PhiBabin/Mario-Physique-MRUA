@@ -1,0 +1,2 @@
+350 50
+Gravity(px) Frame(Hertz)

@@ -9,7 +9,15 @@ int main(){
     float Time = Clock.GetElapsedTime();
     float lastFrame;
     Clock.Reset();
-    float frame= 50;
+    float frame;
+	int Gravity;
+
+    /// Load the configuration file
+    FILE* configFile = NULL;
+	configFile = fopen("config.txt", "r");
+	if(configFile==NULL){ cerr<<"[FATAL ERROR] Configuration file not found."<<endl; exit(1);}
+    fscanf(configFile, "%d %f",&Gravity,&frame);
+
     /// Set the bool condition to default
     bool menu=false,record=false,mouse=false;
 
@@ -69,7 +77,7 @@ int main(){
     App.SetFramerateLimit(60);
 
     /// Create the instance of the player
-    Player newPlayer(imgPlayer,&App);
+    Player newPlayer(imgPlayer,&App,Gravity);
 
     /// Create the instance of the Map
 	MapTile myMap(App,"level.png","tile.png","tileimage.png","tileprop.txt",newPlayer);
@@ -161,7 +169,7 @@ int main(){
             ss<<dataList.size();
             TextInfo=ss.str()+"/200";
             DataText.SetString(TextInfo);
-            DataText.SetPosition(App.GetView().GetCenter().x+SCREENWIDTH/4-50.f, App.GetView().GetCenter().y-SCREENHEIGHT/4);
+            DataText.SetPosition(App.GetView().GetCenter().x+SCREENWIDTH/4-70.f, App.GetView().GetCenter().y-SCREENHEIGHT/4);
         }
         /// Clear the screen
         App.Clear();

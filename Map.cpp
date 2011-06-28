@@ -25,7 +25,6 @@ MapTile::MapTile(sf::RenderWindow &App,const char* tileset,const char* image_sch
 
  bool MapTile::collisionPlayerGeneral(const sf::IntRect playerRect){
     int maxHeight, minHeight, maxWidth, minWidth;
-  //  bool Collision=false;
     minHeight=playerRect.Top/TILEHEIGHT;
     minWidth=playerRect.Left/TILEWIDTH;
     maxHeight=(playerRect.Top+playerRect.Height-1)/TILEHEIGHT;
@@ -125,15 +124,19 @@ void MapTile::draw(){
  }
 //Tileset: image du niveau image_schema: Liste des tiles (petit) image_corr: liste des tiles correspondant tileprop: fichier des propriété
 void MapTile::loadMap(const char* tileset,const char* image_schema,const char* image_corr,const char* tileprop){
+    //! Initiation des images temporaire
     sf::Image tilesetImg,image_schemaImg;
     tilesetImg.LoadFromFile(tileset);
+    //! On supprime les vectors
 	m_typeList.erase(m_typeList.begin(),m_typeList.end());
 	m_tileSet.erase(m_tileSet.begin(),m_tileSet.end());
     image_schemaImg.LoadFromFile(image_schema);
+    //! Initiation des images des tiles
     m_ImgTypeTile.LoadFromFile(image_corr);
     m_ImgTypeTile.SetSmooth(false);
     m_width=tilesetImg.GetWidth();
     m_height=tilesetImg.GetHeight();
+    //! On crée un vector de tile et on les fait corresponds à un pixel
     for(unsigned int it=0;it<image_schemaImg.GetWidth();it++){
         for(unsigned int it2=0;it2<image_schemaImg.GetHeight();it2++){
             Type newTile;
@@ -142,6 +145,7 @@ void MapTile::loadMap(const char* tileset,const char* image_schema,const char* i
             m_typeList.insert(m_typeList.end(),newTile);
         }
     }
+    //! On charge le fichier des propriétés de la map
     FILE* tilePropFile = NULL;
 	tilePropFile = fopen(tileprop, "r");
 	if(tilePropFile==NULL){ cerr<<"[FATAL ERROR] Map not found."<<endl; exit(1);}
@@ -180,6 +184,5 @@ void MapTile::loadMap(const char* tileset,const char* image_schema,const char* i
         }
     }
     m_map.Display();
-
 }
 

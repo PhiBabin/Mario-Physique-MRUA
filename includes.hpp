@@ -7,7 +7,6 @@
 #define TILEHEIGHT 15  //Px height a tile
 #define TILESETWIDTH 9 //Number of tile in a tile set image
 #define TILESETHEIGHT 8 //Number of tile in a tile set image
-#define GRAVITY 350.f //Gravity force
 
 #define LEFT true
 #define RIGHT false

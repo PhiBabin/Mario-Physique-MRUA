@@ -1,7 +1,7 @@
 #include "Player.hpp"
 
-Player::Player(sf::Image &imgPlayer,sf::RenderWindow *app)
-: ImgAnim::ImgAnim(imgPlayer,3,4),m_app(app){
+Player::Player(sf::Image &imgPlayer,sf::RenderWindow *app,int grav)
+: ImgAnim::ImgAnim(imgPlayer,3,4),m_app(app),m_gravity(grav){
     setDelay(0.1);
     m_colBot=false;
     m_velx=0;
@@ -14,8 +14,7 @@ sf::IntRect Player::GetMovedPlayerRect(const float moveX,const float moveY){
   return sf::IntRect(GetPosition().x+moveX,GetPosition().y+moveY,PLAYERCOLLISIONWIDTH,PLAYERCOLLISIONHEIGHT);
 }
 void Player::Gravity(){
-    ///if(m_vely<200)
-    m_vely+=GRAVITY*m_app->GetFrameTime()/1000;
+    m_vely+=m_gravity*m_app->GetFrameTime()/1000;
 }
 void Player::Jump(){
     if(!m_jumpLock&&m_vely>-500){
@@ -25,7 +24,6 @@ void Player::Jump(){
         cout<<"jump"<<endl;
     }
 }
-//direction=true=left
 void Player::Turn(bool left, bool right){
 
 
