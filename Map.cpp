@@ -23,7 +23,7 @@ MapTile::MapTile(sf::RenderWindow &App,const char* tileset,const char* image_sch
     if(!collisionPlayerGeneral(m_player.GetMovedPlayerRect(movHor,movVer)))m_player.Move(movHor,movVer);
  }
 
- bool MapTile::collisionPlayerGeneral(const sf::IntRect playerRect){
+ bool MapTile::collisionPlayerGeneral(const sf::FloatRect playerRect){
     int maxHeight, minHeight, maxWidth, minWidth;
     minHeight=playerRect.Top/TILEHEIGHT;
     minWidth=playerRect.Left/TILEWIDTH;
@@ -38,7 +38,7 @@ MapTile::MapTile(sf::RenderWindow &App,const char* tileset,const char* image_sch
         for(int x=minWidth;x<=maxWidth;x++){
             if(!(x>=m_width or y>=m_height)){
                 if(m_tileSet[x][y].solid){
-                   sf::IntRect  theTile(x*TILEWIDTH,y*TILEHEIGHT,TILEWIDTH,TILEHEIGHT);
+                   sf::FloatRect  theTile(x*TILEWIDTH,y*TILEHEIGHT,TILEWIDTH,TILEHEIGHT);
                     if(playerRect.Intersects(theTile)){
                        return true;
                     }
@@ -49,7 +49,7 @@ MapTile::MapTile(sf::RenderWindow &App,const char* tileset,const char* image_sch
     return false;
  }
 
- bool MapTile::collisionPlayerHorizontal(const sf::IntRect playerRect){
+ bool MapTile::collisionPlayerHorizontal(const sf::FloatRect playerRect){
     int maxHeight, minHeight, maxWidth, minWidth;
     bool CollisionHorizontal=false;
     minHeight=playerRect.Top/TILEHEIGHT;
@@ -77,7 +77,7 @@ MapTile::MapTile(sf::RenderWindow &App,const char* tileset,const char* image_sch
     }
     return CollisionHorizontal;
  }
- bool MapTile::collisionPlayerVertical(const sf::IntRect playerRect){
+ bool MapTile::collisionPlayerVertical(const sf::FloatRect playerRect){
     int maxHeight, minHeight, maxWidth, minWidth;
     bool CollisionVertical=false;
 

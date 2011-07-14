@@ -7,11 +7,11 @@ Player::Player(sf::Image &imgPlayer,sf::RenderWindow *app,int grav)
     m_velx=0;
     m_vely=0;
 }
-sf::IntRect Player::GetPlayerRect(){
-    return sf::IntRect(GetPosition().x,GetPosition().y,PLAYERCOLLISIONWIDTH,PLAYERCOLLISIONHEIGHT);
+sf::FloatRect Player::GetPlayerRect(){
+    return sf::FloatRect(GetPosition().x,GetPosition().y,PLAYERCOLLISIONWIDTH,PLAYERCOLLISIONHEIGHT);
 }
-sf::IntRect Player::GetMovedPlayerRect(const float moveX,const float moveY){
-  return sf::IntRect(GetPosition().x+moveX,GetPosition().y+moveY,PLAYERCOLLISIONWIDTH,PLAYERCOLLISIONHEIGHT);
+sf::FloatRect Player::GetMovedPlayerRect(const float moveX,const float moveY){
+  return sf::FloatRect(GetPosition().x+moveX,GetPosition().y+moveY,PLAYERCOLLISIONWIDTH,PLAYERCOLLISIONHEIGHT);
 }
 void Player::Gravity(){
     m_vely+=m_gravity*m_app->GetFrameTime()/1000;

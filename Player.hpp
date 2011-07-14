@@ -5,8 +5,8 @@
 class Player:public ImgAnim{
     public:
         Player(sf::Image &imgPlayer,sf::RenderWindow *app,int grav);
-        sf::IntRect GetPlayerRect();
-        sf::IntRect GetMovedPlayerRect(const float moveX,const float moveY);
+        sf::FloatRect GetPlayerRect();
+        sf::FloatRect GetMovedPlayerRect(const float moveX,const float moveY);
         void Gravity();
         void Jump();
         void UnlockJump();

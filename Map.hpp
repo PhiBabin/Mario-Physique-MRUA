@@ -16,9 +16,9 @@ class MapTile{
         bool collisionTile(const float x, const float y);
         void thinkPlayer();
 
-        bool collisionPlayerGeneral(const sf::IntRect playerRect);
-        bool collisionPlayerHorizontal(const sf::IntRect playerRect);
-        bool collisionPlayerVertical(const sf::IntRect playerRect);
+        bool collisionPlayerGeneral(const sf::FloatRect playerRect);
+        bool collisionPlayerHorizontal(const sf::FloatRect playerRect);
+        bool collisionPlayerVertical(const sf::FloatRect playerRect);
 	private:
         sf::RenderWindow &m_app;
 		int m_width, m_height;
