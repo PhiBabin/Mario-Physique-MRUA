@@ -112,7 +112,7 @@ MapTile::MapTile(sf::RenderWindow &App,const char* tileset,const char* image_sch
 void MapTile::draw(){
     cout<<"x"<<m_player.GetPosition().x<<"y"<<m_player.GetPosition().y<<"Velx"<<m_player.GetVelx()<<"Vely"<<m_player.GetVely()<<endl;
     //! On affiche les tile de la carte
-    m_app.Draw(sf::Sprite(m_map.GetImage()));
+    m_app.Draw(sf::Sprite(m_map.GetTexture()));
 }
  unsigned char MapTile::findType(sf::Color Pix){
         for(unsigned char it=0;it<m_typeList.size();it++){
@@ -125,7 +125,7 @@ void MapTile::draw(){
 //Tileset: image du niveau image_schema: Liste des tiles (petit) image_corr: liste des tiles correspondant tileprop: fichier des propriété
 void MapTile::loadMap(const char* tileset,const char* image_schema,const char* image_corr,const char* tileprop){
     //! Initiation des images temporaire
-    sf::Image tilesetImg,image_schemaImg;
+    sf::Texture tilesetImg,image_schemaImg;
     tilesetImg.LoadFromFile(tileset);
     //! On supprime les vectors
 	m_typeList.erase(m_typeList.begin(),m_typeList.end());
@@ -140,7 +140,7 @@ void MapTile::loadMap(const char* tileset,const char* image_schema,const char* i
     for(unsigned int it=0;it<image_schemaImg.GetWidth();it++){
         for(unsigned int it2=0;it2<image_schemaImg.GetHeight();it2++){
             Type newTile;
-            newTile.colorPix = image_schemaImg.GetPixel(it, it2);
+            newTile.colorPix = image_schemaImg.CopyToImage().GetPixel(it, it2);
             newTile.zoneRect=sf::IntRect(it*TILEWIDTH, it2*TILEHEIGHT, TILEWIDTH, TILEHEIGHT);
             m_typeList.insert(m_typeList.end(),newTile);
         }
@@ -164,20 +164,20 @@ void MapTile::loadMap(const char* tileset,const char* image_schema,const char* i
         vector<Type> tileList2;
         m_tileSet.insert(m_tileSet.end(),tileList2);
         for(int it2=0;it2< m_height;it2++){
-            theTile=findType(tilesetImg.GetPixel(it, it2));
+            theTile=findType(tilesetImg.CopyToImage().GetPixel(it, it2));
             if(theTile==typeSpawn1){
                 sf::Vector2f m_spawnLocationOne(it*TILEWIDTH ,(it2+1)*TILEHEIGHT-PLAYERCOLLISIONHEIGHT);
                 m_player.SetPosition(m_spawnLocationOne);
             }
             Type theNewTile= m_typeList[theTile];
             theNewTile.tile.SetPosition(it*TILEWIDTH,it2*TILEHEIGHT);
-            theNewTile.tile.SetImage(m_ImgTypeTile);
+            theNewTile.tile.SetTexture(m_ImgTypeTile);
             theNewTile.tile.SetSubRect(m_typeList[theTile].zoneRect);
              m_tileSet[it].insert( m_tileSet[it].end(),theNewTile);
         }
     }
     m_map.Create(m_width*TILEWIDTH,m_height*TILEHEIGHT);
-    m_drawSprite.SetImage(m_ImgTypeTile);
+    m_drawSprite.SetTexture(m_ImgTypeTile);
     for(int y=0;y<m_height;y++){
         for(int x=0;x<m_width;x++){
             if(m_tileSet[x][y].visible)m_map.Draw(m_tileSet[x][y].tile);

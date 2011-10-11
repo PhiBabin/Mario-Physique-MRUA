@@ -44,7 +44,7 @@ int main(){
 
 
     //! Load the image and set the sprite of the origine point
-    sf::Image imgOrigine;
+    sf::Texture imgOrigine;
 	imgOrigine.LoadFromFile("origine.png");
     sf::Sprite originePoint(imgOrigine);
     originePoint.SetPosition(-300.f,-300.f);
@@ -63,22 +63,21 @@ int main(){
 
 
     //! Load the image of the player
-    sf::Image imgPlayer;
+    sf::Texture imgPlayer;
 	imgPlayer.LoadFromFile("sprite4.png");
-	imgPlayer.CreateMaskFromColor(sf::Color(0,0,0));
 
     //! Load the image player data point
-    sf::Image imgPoint;
+    sf::Texture imgPoint;
 	imgPoint.LoadFromFile("point.png");
 
     //! Load the image and set the sprite of record button
-    sf::Image imgRecord;
+    sf::Texture imgRecord;
 	imgRecord.LoadFromFile("record.png");
 	ImgAnim Record(imgRecord,2,1);
 	Record.stop();
 
     //! Load the image and set the sprite of stop button
-    sf::Image imgStop;
+    sf::Texture imgStop;
 	imgStop.LoadFromFile("stop.png");
 	ImgAnim Stop(imgStop,2,1);
 	Stop.stop();
@@ -108,14 +107,12 @@ int main(){
             //! If any key is press close the menu
             if (event.Type == sf::Event::Closed) App.Close();
         }
-        //! Load Inputs
-        const sf::Input& Input = App.GetInput();
         //! The Scolling view
         App.SetView(GameView);
 
         //! Set the origin point
-        if(Input.IsMouseButtonDown(sf::Mouse::Left)){
-            originePoint.SetPosition(App.ConvertCoords(Input.GetMouseX()-originePoint.GetSize().x*2.f/3.f,Input.GetMouseY()-originePoint.GetSize().y*2.f/3.f));
+        if(sf::Mouse::IsButtonPressed(sf::Mouse::Left)){
+            originePoint.SetPosition(App.ConvertCoords(sf::Mouse::GetPosition().x-originePoint.GetSize().x*2.f/3.f,sf::Mouse::GetPosition().y-originePoint.GetSize().y*2.f/3.f));
             mouse=true;
         }
 
@@ -124,12 +121,12 @@ int main(){
             lastFrame = Clock.GetElapsedTime();
             dataList.push_back(new dataPoint(Clock.GetElapsedTime()-Time));
             dataList.back()->SetPosition(newPlayer.GetPosition());
-            dataList.back()->SetImage(imgPoint);
+            dataList.back()->SetTexture(imgPoint);
             cout<< "frame"<<endl;
         }
 
         //! Start recording
-        if (App.GetInput().IsKeyDown(sf::Key::Z)&&!record){
+        if (sf::Keyboard::IsKeyPressed(sf::Keyboard::Z)&&!record){
             Message="Recording";
             record=true;
             Record.setFrame(1);
@@ -140,11 +137,11 @@ int main(){
             vector<dataPoint*>().swap(dataList);
             dataList.push_back(new dataPoint(0));
             dataList.back()->SetPosition(newPlayer.GetPosition());
-            dataList.back()->SetImage(imgPoint);
+            dataList.back()->SetTexture(imgPoint);
         }
 
         //! Stop the recording
-        if ((App.GetInput().IsKeyDown(sf::Key::X)&&record)||(dataList.size()>=200&&record)){
+        if ((sf::Keyboard::IsKeyPressed(sf::Keyboard::X)&&record)||(dataList.size()>=200&&record)){
             record=false;
             Record.setFrame(0);
             Stop.setFrame(1);
@@ -154,14 +151,16 @@ int main(){
             string const nomFichier("data/data"+ss.str()+".csv");
             Message=nomFichier+" saved.";
             ofstream monFlux(nomFichier.c_str());
-            monFlux<<"\"Temps(Milliseconde)\",\"S(Px)\""<<endl;
+            monFlux<<"\"Temps(Milliseconde)\",\"x en Px\",\"y en Px\""<<endl;
             for(unsigned int it=0;it<dataList.size();it++)
-            monFlux<<"\""<<dataList.at(it)->GetTime()<<"\""<<",\""<<-1*(dataList.at(it)->GetPosition().y-originePoint.GetPosition().y)<<"\""<< endl;
+                monFlux<<"\""<<dataList.at(it)->GetTime()<<"\""
+                <<",\""<<(dataList.at(it)->GetPosition().x-originePoint.GetPosition().x)<<"\""
+                <<",\""<<-1*(dataList.at(it)->GetPosition().y-originePoint.GetPosition().y)<<"\""<< endl;
         }
 
         //! Player moving inputs
-        if (App.GetInput().IsKeyDown(sf::Key::Up))newPlayer.Jump();
-        newPlayer.Turn(App.GetInput().IsKeyDown(sf::Key::Left),App.GetInput().IsKeyDown(sf::Key::Right));
+        if (sf::Keyboard::IsKeyPressed(sf::Keyboard::Up))newPlayer.Jump();
+        newPlayer.Turn(sf::Keyboard::IsKeyPressed(sf::Keyboard::Left),sf::Keyboard::IsKeyPressed(sf::Keyboard::Right));
 
         //! Check collision
         myMap.thinkPlayer();

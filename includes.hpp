@@ -26,10 +26,11 @@
 #include <SFML/Graphics.hpp>
 
 
-
 sf::Clock Clock;
 using namespace std;
-#include "LayerAnim.cpp"
+
+#include "Anim.cpp"
+
 #include "ImgAnim.cpp"
 
 #include "dataPoint.cpp"

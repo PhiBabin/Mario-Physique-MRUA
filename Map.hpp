@@ -22,13 +22,13 @@ class MapTile{
 	private:
         sf::RenderWindow &m_app;
 		int m_width, m_height;
-		sf::Image m_ImgTypeTile;
+		sf::Texture m_ImgTypeTile;
 		sf::Sprite m_drawSprite;
 		vector <vector<Type> > m_tileSet;
 		vector <Type> m_typeList;
 		sf::Vector2f m_spawnLocationOne;
 		Player &m_player;
-		sf::RenderImage m_map;
+		sf::RenderTexture m_map;
 };
 
 

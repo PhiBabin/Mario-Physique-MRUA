@@ -1,6 +1,6 @@
 #include "Player.hpp"
 
-Player::Player(sf::Image &imgPlayer,sf::RenderWindow *app,int grav)
+Player::Player(sf::Texture &imgPlayer,sf::RenderWindow *app,int grav)
 : ImgAnim::ImgAnim(imgPlayer,3,4),m_app(app),m_gravity(grav){
     setDelay(0.1);
     m_colBot=false;

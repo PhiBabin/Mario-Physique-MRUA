@@ -4,7 +4,7 @@
 #define PLAYER_HPP_INCLUDED
 class Player:public ImgAnim{
     public:
-        Player(sf::Image &imgPlayer,sf::RenderWindow *app,int grav);
+        Player(sf::Texture &imgPlayer,sf::RenderWindow *app,int grav);
         sf::FloatRect GetPlayerRect();
         sf::FloatRect GetMovedPlayerRect(const float moveX,const float moveY);
         void Gravity();
@@ -16,7 +16,7 @@ class Player:public ImgAnim{
         void BottomCollision(bool is);
         void ResetVely();
     private:
-        sf::Image m_imgPlayer;
+        sf::Texture m_imgPlayer;
         sf::RenderWindow *m_app;
         float m_velx;
         float m_vely;

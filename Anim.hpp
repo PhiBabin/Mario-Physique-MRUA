@@ -1,3 +1,19 @@
+/**
+Copyright (C) 2011 babin philippe
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along
+with this program; if not, write to the Free Software Foundation, Inc.,
+51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.*/
 #ifndef ANIM_H
 #define ANIM_H
 
@@ -8,7 +24,7 @@
 *	\class Anim
 *	Implémente la gestion des animation selon le temps.
 */
-class Anim 
+class Anim
 {
 public:
 	Anim(void);
@@ -33,7 +49,6 @@ public:
 	//!Retourne si l'animation est joué en boucle
 	bool isLoop() const;
 
-
 	//!Joue l'animation
 	void play();
 
@@ -42,6 +57,9 @@ public:
 
 	//!Met l'animation en pause et laisse le compteur où il en est.
 	void pause();
+
+	//!Retourne true si l'animation est posé
+	bool isStop() const;
 
 	//!Retourne true si l'animation joue
 	bool isPlaying() const;
@@ -61,7 +79,6 @@ protected:
 	//!Timer de l'animation
 	PausableClock m_time;
 
-private:
 	//!Frame courant de l'animation
 	unsigned int m_frameCount;
 	//!Delai en seconde entre chaque animation
